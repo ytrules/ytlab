@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make It Sound Like A Song — YT Creative Lab</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KICA8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIGZpbGw9IiMwNTA1MDUiLz4KICA8IS0tIE1pYyBib2R5IC0tPgogIDxyZWN0IHg9IjEyIiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSIxNCIgcng9IjQiIGZpbGw9IiNDOUE4NEMiLz4KICA8IS0tIE1pYyBzdGFuZCBhcmMgLS0+CiAgPHBhdGggZD0iTTggMTYgUTggMjQgMTYgMjQgUTI0IDI0IDI0IDE2IiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBTdGFuZCBwb2xlIC0tPgogIDxsaW5lIHgxPSIxNiIgeTE9IjI0IiB4Mj0iMTYiIHkyPSIyOCIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gQmFzZSAtLT4KICA8bGluZSB4MT0iMTEiIHkxPSIyOCIgeDI9IjIxIiB5Mj0iMjgiIHN0cm9rZT0iI0M5QTg0QyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KICA8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIGZpbGw9IiMwNTA1MDUiLz4KICA8IS0tIE1pYyBib2R5IC0tPgogIDxyZWN0IHg9IjEyIiB5PSI0IiB3aWR0aD0iOCIgaGVpZ2h0PSIxNCIgcng9IjQiIGZpbGw9IiNDOUE4NEMiLz4KICA8IS0tIE1pYyBzdGFuZCBhcmMgLS0+CiAgPHBhdGggZD0iTTggMTYgUTggMjQgMTYgMjQgUTI0IDI0IDI0IDE2IiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBTdGFuZCBwb2xlIC0tPgogIDxsaW5lIHgxPSIxNiIgeTE9IjI0IiB4Mj0iMTYiIHkyPSIyOCIgc3Ryb2tlPSIjQzlBODRDIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gQmFzZSAtLT4KICA8bGluZSB4MT0iMTEiIHkxPSIyOCIgeDI9IjIxIiB5Mj0iMjgiIHN0cm9rZT0iI0M5QTg0QyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bebas+Neue&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+:root{--black:#050505;--gold:#C9A84C;--gold-light:#E8CC7A;--white:#F5F0E8;--gray:#141414;--gray2:#1e1e1e;--polish:#4a9eff;--magic:#f9c74f;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;transition:width .3s,height .3s,opacity .3s;}
+a,button,label{cursor:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:rgba(5,5,5,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);}
+.nav-back{display:flex;align-items:center;gap:10px;text-decoration:none;color:rgba(245,240,232,.5);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;transition:color .3s;}
+.nav-back:hover{color:var(--gold);}
+.nav-back svg{width:14px;height:14px;fill:currentColor;}
+.nav-title{font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.2em;color:var(--gold);}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 40px 80px;position:relative;overflow:hidden;}
+.hero-video-wrap{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.hero-video-wrap video{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  min-width:100%;
+  min-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:cover;
+  object-position:center center;
+}
+.hero-video-wrap::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(5,5,5,.65) 0%,
+    rgba(5,5,5,.45) 40%,
+    rgba(5,5,5,.55) 70%,
+    rgba(5,5,5,.85) 100%
+  );
+}
+.hero > *:not(.hero-video-wrap){position:relative;z-index:1;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(201,168,76,.06) 0%,transparent 70%);}
+.hero-eyebrow{font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:.85;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,9vw,8rem);letter-spacing:.04em;line-height:.88;margin-bottom:24px;}
+.hero-title span{color:var(--gold);display:block;}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1rem,2vw,1.35rem);color:rgba(245,240,232,.5);max-width:580px;margin:0 auto 50px;line-height:1.8;}
+.hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.badge{padding:7px 18px;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(201,168,76,.2);color:rgba(245,240,232,.5);}
+.badge.hl{background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.4);color:var(--gold);}
+
+.section-eyebrow{font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;opacity:.85;text-align:center;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:.05em;text-align:center;margin-bottom:12px;}
+.section-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(245,240,232,.4);text-align:center;margin-bottom:56px;font-size:1rem;}
+
+.demo{background:var(--gray);padding:100px 60px;}
+.players-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:1200px;margin:0 auto;}
+.player-card{background:var(--gray2);padding:30px 26px;position:relative;}
+.player-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.player-card.iphone::before{background:rgba(255,255,255,.15);}
+.player-card.polish::before{background:var(--polish);}
+.player-card.magic::before{background:var(--magic);}
+.player-label{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:5px;}
+.player-card.iphone .player-label{color:rgba(245,240,232,.35);}
+.player-card.polish .player-label{color:var(--polish);}
+.player-card.magic .player-label{color:var(--magic);}
+.player-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.06em;margin-bottom:3px;}
+.player-price{font-size:.58rem;color:rgba(245,240,232,.35);letter-spacing:.1em;margin-bottom:18px;}
+.player-card.polish .player-price{color:rgba(74,158,255,.7);}
+.player-card.magic .player-price{color:rgba(249,199,79,.7);}
+.waveform-wrap{height:64px;margin-bottom:14px;position:relative;cursor:pointer;}
+canvas.waveform{width:100%;height:100%;display:block;}
+.playhead{position:absolute;top:0;bottom:0;width:1.5px;background:var(--gold);left:0;pointer-events:none;}
+.audio-controls{display:flex;align-items:center;gap:10px;}
+.play-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;flex-shrink:0;transition:transform .2s;}
+.play-btn:hover{transform:scale(1.1);}
+.player-card.iphone .play-btn{background:rgba(255,255,255,.12);}
+.player-card.polish .play-btn{background:var(--polish);}
+.player-card.magic .play-btn{background:var(--magic);}
+.play-btn svg{width:13px;height:13px;fill:#000;margin-left:2px;}
+.player-card.iphone .play-btn svg{fill:#fff;}
+.time-disp{font-size:.58rem;color:rgba(245,240,232,.35);font-variant-numeric:tabular-nums;width:32px;text-align:right;flex-shrink:0;}
+.prog-bar{flex:1;height:2px;background:rgba(255,255,255,.08);cursor:pointer;}
+.prog-fill{height:100%;width:0%;}
+.player-card.iphone .prog-fill{background:rgba(255,255,255,.35);}
+.player-card.polish .prog-fill{background:var(--polish);}
+.player-card.magic .prog-fill{background:var(--magic);}
+
+.plans{padding:100px 60px;background:var(--black);}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;max-width:860px;margin:56px auto 0;}
+.plan-card{background:var(--gray2);padding:44px 38px;position:relative;}
+.plan-card.magic-plan{background:linear-gradient(135deg,#0e0c07 0%,#181408 100%);border:1px solid rgba(201,168,76,.2);}
+.plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.plan-card.polish-plan::before{background:var(--polish);}
+.plan-card.magic-plan::before{background:var(--magic);}
+.plan-tier{font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:10px;}
+.plan-card.polish-plan .plan-tier{color:var(--polish);}
+.plan-card.magic-plan .plan-tier{color:var(--magic);}
+.plan-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.05em;margin-bottom:6px;}
+.plan-price{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:var(--gold);line-height:1;margin-bottom:4px;}
+.plan-note{font-size:.55rem;color:rgba(245,240,232,.3);letter-spacing:.1em;margin-bottom:28px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.plan-features li{font-size:.76rem;color:rgba(245,240,232,.55);display:flex;gap:8px;line-height:1.5;}
+.plan-features li::before{content:'—';color:var(--gold);flex-shrink:0;}
+.plan-btn{display:block;width:100%;text-align:center;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;padding:13px;border:none;font-family:'Inter',sans-serif;transition:opacity .3s;}
+.plan-card.polish-plan .plan-btn{background:var(--polish);color:#000;}
+.plan-card.magic-plan .plan-btn{background:var(--gold);color:#000;}
+.plan-btn:hover{opacity:.85;}
+
+.upload-section{background:var(--gray);padding:100px 60px;}
+.upload-box{max-width:680px;margin:56px auto 0;background:var(--gray2);padding:44px;text-align:center;border:1px dashed rgba(201,168,76,.15);transition:border-color .3s,background .3s;}
+.upload-box.drag-over{border-color:var(--gold);background:rgba(201,168,76,.03);}
+.upload-icon{font-size:2.5rem;margin-bottom:14px;opacity:.35;}
+.upload-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.06em;margin-bottom:8px;}
+.upload-sub{font-size:.75rem;color:rgba(245,240,232,.38);line-height:1.8;margin-bottom:24px;}
+.upload-rules{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);padding:14px 18px;text-align:left;margin-bottom:24px;}
+.upload-rules h4{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.upload-rules ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.upload-rules li{font-size:.7rem;color:rgba(245,240,232,.45);display:flex;gap:8px;}
+.upload-rules li::before{content:'·';color:var(--gold);}
+.file-input{display:none;}
+.upload-btn{display:inline-block;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:13px 34px;border:none;font-family:'Inter',sans-serif;}
+.v-result{margin-top:20px;padding:14px 18px;display:none;}
+.v-result.show{display:block;}
+.v-result.ok{background:rgba(40,180,80,.07);border:1px solid rgba(40,180,80,.25);}
+.v-result.fail{background:rgba(220,50,50,.07);border:1px solid rgba(220,50,50,.25);}
+.v-title{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;font-weight:500;}
+.v-result.ok .v-title{color:#4caf7d;}
+.v-result.fail .v-title{color:#e05555;}
+.v-msg{font-size:.73rem;color:rgba(245,240,232,.5);line-height:1.6;}
+
+/* YT Bucks */
+.ytbucks-wrap{margin-top:20px;display:none;}
+.ytbucks-wrap.show{display:block;}
+.ytbucks-label{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;text-align:left;}
+.ytbucks-row{display:flex;gap:6px;}
+.ytbucks-input{flex:1;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);color:var(--white);font-family:'Inter',sans-serif;font-size:.75rem;padding:10px 14px;letter-spacing:.1em;outline:none;transition:border-color .3s;}
+.ytbucks-input:focus{border-color:rgba(201,168,76,.4);}
+.ytbucks-input::placeholder{color:rgba(245,240,232,.2);}
+.ytbucks-btn{padding:10px 18px;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-family:'Inter',sans-serif;white-space:nowrap;transition:all .3s;}
+.ytbucks-btn:hover{background:rgba(201,168,76,.2);}
+.ytbucks-status{font-size:.7rem;margin-top:7px;text-align:left;min-height:18px;}
+.ytbucks-status.ok{color:#4caf7d;}
+.ytbucks-status.fail{color:#e05555;}
+
+.plan-pick{margin-top:24px;display:none;}
+.plan-pick.show{display:block;}
+.plan-pick-label{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.plan-btns{display:flex;gap:6px;}
+.plan-pick-btn{flex:1;padding:11px;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;border:1px solid rgba(255,255,255,.08);background:none;color:rgba(245,240,232,.5);font-family:'Inter',sans-serif;transition:all .3s;}
+.plan-pick-btn.p-active{border-color:var(--polish);color:var(--polish);background:rgba(74,158,255,.07);}
+.plan-pick-btn.m-active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.07);}
+
+/* Email input */
+.email-wrap{margin-top:12px;display:none;}
+.email-wrap.show{display:block;}
+.email-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--white);font-family:'Inter',sans-serif;font-size:.75rem;padding:11px 14px;outline:none;transition:border-color .3s;}
+.email-input:focus{border-color:rgba(201,168,76,.4);}
+.email-input::placeholder{color:rgba(245,240,232,.2);}
+
+.submit-btn{width:100%;margin-top:10px;padding:15px;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;background:var(--gold);color:var(--black);border:none;font-family:'Inter',sans-serif;font-weight:500;display:none;transition:opacity .3s;}
+.submit-btn.show{display:block;}
+.submit-btn:disabled{opacity:.5;}
+
+/* Payment modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(5,5,5,.92);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.modal-overlay.show{display:flex;}
+.modal-box{background:var(--gray2);border:1px solid rgba(201,168,76,.15);padding:44px;max-width:480px;width:90%;position:relative;}
+.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;color:rgba(245,240,232,.3);font-size:1.2rem;line-height:1;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.06em;margin-bottom:4px;}
+.modal-sub{font-size:.7rem;color:rgba(245,240,232,.4);margin-bottom:28px;}
+#card-element{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);padding:14px;margin-bottom:14px;}
+#card-errors{font-size:.7rem;color:#e05555;min-height:18px;margin-bottom:12px;}
+.pay-btn{width:100%;padding:14px;font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;background:var(--gold);color:var(--black);border:none;font-family:'Inter',sans-serif;font-weight:500;transition:opacity .3s;}
+.pay-btn:disabled{opacity:.5;}
+.processing-msg{text-align:center;padding:20px 0;display:none;}
+.processing-msg.show{display:block;}
+.processing-spinner{font-size:1.8rem;animation:spin 1s linear infinite;display:inline-block;margin-bottom:10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.processing-text{font-size:.72rem;color:rgba(245,240,232,.5);letter-spacing:.1em;}
+.success-msg{text-align:center;padding:20px 0;display:none;}
+.success-msg.show{display:block;}
+.success-icon{font-size:2.5rem;margin-bottom:12px;}
+.success-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);letter-spacing:.06em;margin-bottom:8px;}
+.success-sub{font-size:.75rem;color:rgba(245,240,232,.4);line-height:1.8;}
+
+.how{padding:100px 60px;background:var(--black);}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;max-width:1000px;margin:56px auto 0;}
+.step{background:var(--gray2);padding:30px 26px;}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:rgba(201,168,76,.18);line-height:1;margin-bottom:10px;}
+.step-title{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px;color:var(--gold);}
+.step-desc{font-size:.72rem;color:rgba(245,240,232,.4);line-height:1.7;}
+
+.pg-footer{text-align:center;padding:40px;border-top:1px solid rgba(201,168,76,.08);}
+.pg-footer a{color:rgba(245,240,232,.25);text-decoration:none;font-size:.58rem;letter-spacing:.2em;}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}
+.reveal.visible{opacity:1;transform:none;}
+
+@media(max-width:900px){
+  nav{padding:16px 20px;}
+  .demo,.plans,.upload-section,.how{padding:70px 20px;}
+  .players-grid,.plans-grid{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr 1fr;}
+  .hero{padding:100px 20px 60px;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="https://ytrules.com" class="nav-back">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    YT Creative Lab
+  </a>
+  <div class="nav-title">MAKE IT SOUND LIKE A SONG</div>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <button onclick="setLang('en')" id="lang-en" style="background:none;border:none;font-size:.55rem;letter-spacing:.15em;color:rgba(245,240,232,.4);font-family:Inter,sans-serif;padding:4px 8px;transition:color .3s;cursor:pointer;">ENG</button>
+    <button onclick="setLang('ko')" id="lang-ko" style="background:none;border:none;font-size:.55rem;letter-spacing:.15em;color:rgba(245,240,232,.4);font-family:Inter,sans-serif;padding:4px 8px;transition:color .3s;cursor:pointer;">한국어</button>
+    <button onclick="setLang('es')" id="lang-es" style="background:none;border:none;font-size:.55rem;letter-spacing:.15em;color:rgba(245,240,232,.4);font-family:Inter,sans-serif;padding:4px 8px;transition:color .3s;cursor:pointer;">ESP</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-video-wrap">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="./ytcreativelab_bg.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-eyebrow">YT Creative Lab · Los Angeles</div>
+  <h1 class="hero-title">MAKE IT SOUND<span>LIKE A SONG.</span></h1>
+  <p class="hero-sub" data-en="You caught the moment. Now let's make it sound like one. YT's enchanted signal chain takes your raw iPhone take and turns it into something you'd actually play for someone — your first real step toward a pro sound. It is not finished. But you'll love it. And you'll want more." data-ko="그 순간을 담았군요. 이제 진짜 노래처럼 들리게 해봐요. YT의 마법 같은 시그널 체인이 당신의 아이폰 녹음을 — 실제로 누군가에게 들려주고 싶은 무언가로 바꿔드립니다. 아직 완성은 아니에요. 하지만 분명 마음에 들 거예요. 그리고 더 원하게 될 거예요." data-es="Capturaste el momento. Ahora hagámoslo sonar como uno. El signal chain encantado de YT toma tu grabación de iPhone y la convierte en algo que querrías mostrarle a alguien — tu primer paso real hacia un sonido profesional. No está terminado. Pero te va a gustar. Y vas a querer más.">You caught the moment. Now let's make it sound like one. YT's enchanted signal chain takes your raw iPhone take and turns it into something you'd actually play for someone — your first real step toward a pro sound. It is not finished. But you'll love it. And you'll want more.</p>
+  <div class="hero-badges">
+    <span class="badge" data-en="Voice · Acoustic · Solo Instrument" data-ko="보컬 · 어쿠스틱 · 솔로 악기" data-es="Voz · Acústica · Instrumento Solo">Voice · Acoustic · Solo Instrument</span>
+    <span class="badge" data-en="iPhone Welcome" data-ko="아이폰 녹음 환영" data-es="iPhone Bienvenido">iPhone Welcome</span>
+    <span class="badge hl" data-en="Up to 5 Minutes" data-ko="최대 5분" data-es="Hasta 5 Minutos">Up to 5 Minutes</span>
+    <span class="badge hl" data-en="Instant Delivery" data-ko="즉시 전달" data-es="Entrega Inmediata">Instant Delivery</span>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="reveal">
+    <div class="section-eyebrow">Hear The Difference</div>
+    <h2 class="section-title">BEFORE & AFTER</h2>
+    <p class="section-sub">Angie · "Little Green" — recorded on iPhone</p>
+  </div>
+  <div class="players-grid reveal">
+    <div class="player-card iphone">
+      <div class="player-label">Original</div>
+      <div class="player-title">iPhone Recording</div>
+      <div class="player-price">As-is · Untreated</div>
+      <div class="waveform-wrap" onclick="seekAudio('iphone',event)">
+        <canvas class="waveform" id="wf-iphone"></canvas>
+        <div class="playhead" id="ph-iphone"></div>
+      </div>
+      <div class="audio-controls">
+        <button class="play-btn" onclick="togglePlay('iphone')"><svg id="icon-iphone" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        <div class="prog-bar" onclick="seekAudio('iphone',event)"><div class="prog-fill" id="fill-iphone"></div></div>
+        <span class="time-disp" id="time-iphone">0:00</span>
+      </div>
+      <audio id="audio-iphone" src="./ANGIE_Little_Green_iphone.mp3" preload="none"></audio>
+    </div>
+    <div class="player-card polish">
+      <div class="player-label">YT Polish — $9.99</div>
+      <div class="player-title">Treated · Enhanced</div>
+      <div class="player-price">Entry Level Processing</div>
+      <div class="waveform-wrap" onclick="seekAudio('polish',event)">
+        <canvas class="waveform" id="wf-polish"></canvas>
+        <div class="playhead" id="ph-polish"></div>
+      </div>
+      <div class="audio-controls">
+        <button class="play-btn" onclick="togglePlay('polish')"><svg id="icon-polish" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        <div class="prog-bar" onclick="seekAudio('polish',event)"><div class="prog-fill" id="fill-polish"></div></div>
+        <span class="time-disp" id="time-polish">0:00</span>
+      </div>
+      <audio id="audio-polish" src="./ANGIE_Little_Green_polish.mp3" preload="none"></audio>
+    </div>
+    <div class="player-card magic">
+      <div class="player-label">YT Magic — $19.99</div>
+      <div class="player-title">Transformed · Pro Feel</div>
+      <div class="player-price">Advanced Processing</div>
+      <div class="waveform-wrap" onclick="seekAudio('magic',event)">
+        <canvas class="waveform" id="wf-magic"></canvas>
+        <div class="playhead" id="ph-magic"></div>
+      </div>
+      <div class="audio-controls">
+        <button class="play-btn" onclick="togglePlay('magic')"><svg id="icon-magic" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        <div class="prog-bar" onclick="seekAudio('magic',event)"><div class="prog-fill" id="fill-magic"></div></div>
+        <span class="time-disp" id="time-magic">0:00</span>
+      </div>
+      <audio id="audio-magic" src="./ANGIE_Little_Green_magic.mp3" preload="none"></audio>
+    </div>
+  </div>
+</section>
+
+<section class="plans">
+  <div class="reveal">
+    <div class="section-eyebrow">Choose Your Level</div>
+    <h2 class="section-title">TWO TIERS. ONE STANDARD.</h2>
+    <p class="section-sub">Designed for simple setups — voice, acoustic guitar, solo piano. Not for full band recordings.</p>
+  </div>
+  <div class="plans-grid reveal">
+    <div class="plan-card polish-plan">
+      <div class="plan-tier">Entry Level</div>
+      <div class="plan-name">YT POLISH</div>
+      <div class="plan-price">$9.99</div>
+      <div class="plan-note">Up to 5 min · WAV or MP3 · Instant Delivery</div>
+      <ul class="plan-features">
+        <li>Noise reduction & cleanup</li>
+        <li>EQ — clarity and warmth</li>
+        <li>Light compression for consistency</li>
+        <li>Volume leveling & loudness optimization</li>
+        <li>Stereo enhancement</li>
+        <li>Delivered as high-quality WAV</li>
+      </ul>
+      <button class="plan-btn" onclick="selectAndScroll('polish')">Get YT Polish →</button>
+    </div>
+    <div class="plan-card magic-plan">
+      <div class="plan-tier">Advanced</div>
+      <div class="plan-name">YT MAGIC</div>
+      <div class="plan-price">$19.99</div>
+      <div class="plan-note">Up to 5 min · WAV or MP3 · Instant Delivery</div>
+      <ul class="plan-features">
+        <li>Everything in YT Polish</li>
+        <li>Advanced harmonic enhancement</li>
+        <li>Spatial depth & dimension</li>
+        <li>Saturation & analog warmth</li>
+        <li>Professional dynamic shaping</li>
+        <li>Mastered to streaming standards</li>
+        <li>YT's signature plugin chain</li>
+      </ul>
+      <button class="plan-btn" onclick="selectAndScroll('magic')">Get YT Magic →</button>
+    </div>
+  </div>
+</section>
+
+<section class="upload-section" id="upload">
+  <div class="reveal">
+    <div class="section-eyebrow">Submit Your Recording</div>
+    <h2 class="section-title">UPLOAD & ORDER</h2>
+    <p class="section-sub">We check your file automatically — then you choose your service.</p>
+  </div>
+  <div class="upload-box reveal" id="dropZone">
+    <div class="upload-icon">🎙️</div>
+    <div class="upload-title">Drop Your File Here</div>
+    <div class="upload-sub">WAV or MP3 · Up to 5 minutes<br>Simple setup — voice, acoustic, solo instrument only</div>
+    <div class="upload-rules">
+      <h4>File Guidelines</h4>
+      <ul>
+        <li>Simple musical setup — one or two elements max</li>
+        <li>No heavily produced or already mixed files</li>
+        <li>No full band or multi-track recordings</li>
+        <li>Maximum 5 minutes duration</li>
+        <li>WAV or MP3 format only</li>
+      </ul>
+    </div>
+    <input type="file" id="fileInput" class="file-input" accept=".wav,.mp3" onchange="handleFile(this.files[0])">
+    <label for="fileInput" class="upload-btn">Choose File</label>
+
+    <div class="v-result" id="vResult">
+      <div class="v-title" id="vTitle"></div>
+      <div class="v-msg" id="vMsg"></div>
+    </div>
+
+    <!-- YT Bucks -->
+    <div class="ytbucks-wrap" id="ytbucksWrap">
+      <div class="ytbucks-label">Have a YT Bucks code?</div>
+      <div class="ytbucks-row">
+        <input type="text" class="ytbucks-input" id="ytbucksInput" placeholder="ENTER CODE" maxlength="20">
+        <button class="ytbucks-btn" onclick="redeemYTBucks()">Redeem</button>
+      </div>
+      <div class="ytbucks-status" id="ytbucksStatus"></div>
+    </div>
+
+    <div class="plan-pick" id="planPick">
+      <div class="plan-pick-label">Choose Your Service</div>
+      <div class="plan-btns">
+        <button class="plan-pick-btn" id="polishBtn" onclick="selectPlan('polish')">YT Polish — $9.99</button>
+        <button class="plan-pick-btn" id="magicBtn" onclick="selectPlan('magic')">YT Magic — $19.99</button>
+      </div>
+      <div class="email-wrap" id="emailWrap">
+        <input type="email" class="email-input" id="emailInput" placeholder="Your email — we'll send the download link here">
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="submitOrder()"></button>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="reveal">
+    <div class="section-eyebrow">The Process</div>
+    <h2 class="section-title">HOW IT WORKS</h2>
+  </div>
+  <div class="steps reveal">
+    <div class="step"><div class="step-num">01</div><div class="step-title">Upload</div><div class="step-desc">Drop your WAV or MP3. We instantly check your file meets the guidelines.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-title">We Check</div><div class="step-desc">Automatic validation ensures your recording is eligible for our service.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-title">Choose & Pay</div><div class="step-desc">Pick YT Polish ($9.99) or YT Magic ($19.99). Secure checkout via Stripe.</div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-title">Instant Download</div><div class="step-desc">Your processed file is delivered to your email automatically. No waiting.</div></div>
+  </div>
+</section>
+
+<div class="pg-footer"><a href="https://ytrules.com">© 2026 YT Creative Lab · ytrules.com</a></div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="payForm">
+      <div class="modal-title" id="modalTitle">YT POLISH</div>
+      <div class="modal-sub" id="modalSub">$9.99 · Instant Delivery</div>
+      <div id="card-element"></div>
+      <div id="card-errors"></div>
+      <button class="pay-btn" id="payBtn" onclick="confirmPayment()">Pay Now →</button>
+    </div>
+    <div class="processing-msg" id="processingMsg">
+      <div class="processing-spinner">⚙️</div>
+      <div class="processing-text">Processing your recording...<br>This usually takes under a minute.</div>
+    </div>
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">🎵</div>
+      <div class="success-title">IT'S READY.</div>
+      <div class="success-sub">Your processed file is on its way.<br>Check your email for the download link.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ──
+const SERVER = 'https://spiffy-justly-footpath.ngrok-free.dev';
+const STRIPE_PK = 'pk_live_51TKs0eQR9kp5fMbbwxAOWBZoA6vNsEjTJa8HmYT0hFb0uM3HKyN0faqRcvswIPgAk3gkQmF4KbEkpM42GYet1yju00HFebnAoN'; // ← 여기 바꿔야함
+const stripe = Stripe(STRIPE_PK);
+let cardElement, clientSecret, uploadedFileId, selPlan, ytbucksApplied = false;
+
+// ── Cursor ──
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+
+// ── Waveforms ──
+const WF = {
+  iphone: [0.0723,0.1372,0.1917,0.1919,0.2006,0.1782,0.1785,0.189,0.1938,0.2075,0.2094,0.2066,0.2013,0.1881,0.1719,0.1875,0.1889,0.1863,0.199,0.202,0.2057,0.2026,0.1941,0.1904,0.1826,0.1983,0.2066,0.1817,0.1666,0.1534,0.1763,0.2533,0.3278,0.4119,0.4411,0.4412,0.442,0.4228,0.4066,0.4031,0.3982,0.3852,0.4035,0.4025,0.407,0.4196,0.4126,0.4165,0.4286,0.452,0.4659,0.4991,0.4969,0.4864,0.4845,0.4438,0.4202,0.3899,0.3647,0.3594,0.376,0.3931,0.405,0.4179,0.4139,0.4132,0.4248,0.4219,0.4253,0.4274,0.4302,0.4317,0.4312,0.4469,0.4434,0.4487,0.4416,0.3959,0.3528,0.2706,0.2057,0.1747,0.1413,0.1501,0.149,0.1463,0.1524,0.1542,0.1636,0.1568,0.1686,0.1621,0.1531,0.1663,0.1589,0.1656,0.1685,0.1512,0.133,0.1239,0.1158,0.1284,0.1401,0.1408,0.1492,0.1464,0.1394,0.1298,0.1145,0.1557,0.2298,0.3399,0.4621,0.5221,0.5504,0.5559,0.5517,0.5525,0.5708,0.5814,0.574,0.561,0.5288,0.5039,0.5002,0.5021,0.5113,0.5236,0.5296,0.5136,0.5086,0.5025,0.4895,0.5037,0.5165,0.5229,0.5323,0.547,0.5553,0.5662,0.5784,0.5764,0.545,0.5249,0.5044,0.4945,0.4956,0.4927,0.4908,0.4656,0.4746,0.4804,0.4865,0.5134,0.542,0.5543,0.5565,0.5517,0.5377,0.5198,0.5381,0.5447,0.5387,0.5339,0.5193,0.5014,0.5027,0.4675,0.4106,0.3245,0.2331,0.1991,0.1761,0.1922,0.2037,0.2129,0.2179,0.2309,0.2232,0.21,0.2152,0.213,0.2223,0.2497,0.2482,0.2558,0.2607,0.2541,0.258,0.2479,0.2532,0.2491,0.2527,0.2503,0.2499,0.255,0.2394,0.2331,0.1982,0.1984,0.2414,0.3209,0.4019,0.4535,0.464,0.4314,0.4203,0.4088,0.4146,0.4208,0.4373,0.4436,0.4536,0.47,0.4642,0.4672,0.46,0.4708,0.498,0.4969,0.5033,0.4844,0.4493,0.4439,0.4306,0.4406,0.458,0.4927,0.5115,0.5185,0.5256,0.4986,0.488,0.4821,0.4694,0.4581,0.4479,0.4399,0.4336,0.4495,0.4804,0.5065,0.5249,0.5258,0.5111,0.5214,0.5419,0.5481,0.5496,0.5209,0.4972,0.4746,0.4569,0.4565,0.4481,0.4748,0.4964,0.4762,0.4413,0.4071,0.4013,0.4764,0.5664,0.6216,0.6667,0.6546,0.6367,0.6476,0.6537,0.6475,0.6709,0.6741,0.667,0.6777,0.6648,0.6598,0.6557,0.6642,0.6693,0.6667,0.6543,0.6295,0.6101,0.5953,0.5852,0.5848,0.591,0.5567,0.5197,0.3827,0.2489,0.1503,0.0594,0.0623,0.0652,0.076,0.0815,0.0886,0.0783,0.0529],
+  polish: [0.1644,0.281,0.3999,0.4556,0.4771,0.474,0.4688,0.4583,0.4506,0.4476,0.4475,0.4415,0.4331,0.4366,0.4299,0.4411,0.4465,0.4502,0.4567,0.4509,0.4477,0.4487,0.4303,0.3849,0.3954,0.4108,0.4887,0.5845,0.6327,0.6612,0.6529,0.6555,0.6664,0.6626,0.6697,0.6819,0.6798,0.6826,0.673,0.6544,0.6505,0.6526,0.6661,0.6759,0.6761,0.6844,0.6862,0.68,0.6797,0.6583,0.6557,0.6528,0.6344,0.6292,0.6106,0.6113,0.6242,0.6533,0.6688,0.6692,0.683,0.6787,0.6659,0.6736,0.6661,0.6718,0.6968,0.6851,0.6286,0.523,0.4129,0.3561,0.3413,0.3573,0.3819,0.3811,0.3759,0.3767,0.3776,0.3602,0.3569,0.3665,0.3644,0.3941,0.4177,0.4248,0.4321,0.4476,0.4493,0.4489,0.4548,0.4342,0.4246,0.415,0.4039,0.3985,0.3986,0.3776,0.346,0.368,0.4022,0.5025,0.6186,0.6768,0.7182,0.729,0.7165,0.7131,0.6946,0.6763,0.6773,0.6862,0.7025,0.7115,0.7154,0.7005,0.6937,0.6868,0.6856,0.6917,0.6884,0.7159,0.73,0.7251,0.7277,0.7172,0.7074,0.6984,0.7142,0.7135,0.7061,0.7227,0.7291,0.7263,0.732,0.7267,0.7162,0.7189,0.7206,0.7144,0.6904,0.6804,0.6559,0.6487,0.67,0.6601,0.6549,0.6387,0.6307,0.6326,0.6565,0.6847,0.6879,0.6941,0.6914,0.6794,0.681,0.6589,0.6071,0.526,0.4551,0.4391,0.4675,0.5194,0.5533,0.5438,0.5317,0.5201,0.5028,0.5056,0.4949,0.4938,0.4983,0.4846,0.4799,0.4778,0.4599,0.4769,0.4744,0.4843,0.4997,0.4967,0.507,0.4924,0.4747,0.4688,0.4761,0.4857,0.504,0.5123,0.4821,0.4692,0.4323,0.3841,0.3909,0.4153,0.5057,0.596,0.6564,0.6919,0.6923,0.6948,0.7028,0.7114,0.7183,0.7239,0.7113,0.7145,0.7158,0.7173,0.7266,0.7185,0.7163,0.7248,0.7219,0.7308,0.7279,0.7175,0.7151,0.7058,0.669,0.654,0.6468,0.6438,0.663,0.6677,0.6806,0.6953,0.6874,0.6957,0.6946,0.6821,0.6988,0.6864,0.6757,0.6825,0.6879,0.696,0.7001,0.6985,0.7011,0.71,0.7185,0.7111,0.7071,0.6881,0.6905,0.6649,0.5982,0.5673,0.5323,0.5769,0.6564,0.7105,0.7639,0.7656,0.7722,0.7832,0.7802,0.7722,0.7666,0.7535,0.7442,0.7561,0.7572,0.7586,0.7752,0.7837,0.7809,0.7742,0.7616,0.7518,0.7364,0.7464,0.7483,0.7326,0.7527,0.7439,0.7501,0.771,0.7707,0.7771,0.7262,0.6479,0.4937,0.3738,0.2931,0.2306,0.2453,0.2272,0.2137,0.2098,0.2311,0.2439,0.2531,0.2683,0.2708,0.2733,0.249,0.1783],
+  magic: [0.21,0.3432,0.4888,0.5394,0.5575,0.5722,0.5542,0.5499,0.5424,0.5294,0.5219,0.5147,0.5182,0.5146,0.529,0.5262,0.5089,0.4725,0.4159,0.4201,0.4603,0.5396,0.642,0.6886,0.7055,0.7002,0.7052,0.7184,0.7211,0.7378,0.7382,0.7295,0.7302,0.7327,0.7324,0.7274,0.7283,0.7114,0.7078,0.7137,0.7306,0.7459,0.7541,0.7511,0.7458,0.7454,0.7229,0.7342,0.7293,0.7169,0.7217,0.7007,0.6882,0.6912,0.6893,0.7051,0.7231,0.7199,0.737,0.7374,0.7346,0.7482,0.7012,0.6345,0.5246,0.4362,0.426,0.4235,0.4694,0.5156,0.5102,0.5164,0.5142,0.4872,0.4809,0.4789,0.4737,0.4745,0.4832,0.4799,0.4814,0.49,0.4821,0.4759,0.4815,0.4757,0.4746,0.4554,0.4123,0.4234,0.4596,0.5635,0.6825,0.7366,0.7699,0.7724,0.7772,0.7918,0.7988,0.8054,0.8013,0.7997,0.7969,0.798,0.7959,0.7954,0.7905,0.7807,0.7704,0.7571,0.7537,0.7389,0.7256,0.7197,0.7165,0.7295,0.7404,0.7632,0.7789,0.7904,0.8119,0.8116,0.8115,0.8124,0.7986,0.7895,0.7932,0.7729,0.775,0.7772,0.7741,0.7706,0.7705,0.7681,0.7678,0.7854,0.8001,0.8064,0.8179,0.8205,0.8118,0.8018,0.7785,0.753,0.7322,0.7359,0.7412,0.7414,0.748,0.7489,0.7408,0.7554,0.7141,0.6572,0.5726,0.487,0.4744,0.4729,0.5163,0.526,0.539,0.5612,0.5633,0.5998,0.6107,0.6033,0.6075,0.6062,0.6041,0.5949,0.5997,0.5974,0.5776,0.5792,0.5796,0.5651,0.5689,0.5716,0.5547,0.5655,0.582,0.5895,0.562,0.5112,0.4886,0.499,0.5869,0.6801,0.7382,0.7398,0.7308,0.7292,0.7337,0.7676,0.7719,0.7857,0.782,0.7763,0.7794,0.7514,0.7589,0.7569,0.7541,0.7684,0.7637,0.7729,0.7851,0.7817,0.789,0.784,0.7807,0.7878,0.7808,0.7781,0.7629,0.7463,0.7378,0.7292,0.7392,0.7553,0.7691,0.7934,0.8025,0.8038,0.796,0.7789,0.763,0.757,0.7531,0.7461,0.7385,0.734,0.713,0.7212,0.733,0.74,0.7479,0.7418,0.7414,0.7518,0.7747,0.766,0.7311,0.6664,0.6158,0.6174,0.6707,0.7493,0.7906,0.8063,0.786,0.7767,0.7867,0.7889,0.8006,0.8063,0.8041,0.8088,0.8178,0.8093,0.823,0.8269,0.8429,0.8584,0.8577,0.8701,0.8509,0.8511,0.856,0.8458,0.8501,0.8597,0.8674,0.8787,0.888,0.8624,0.8475,0.7882,0.7112,0.5644,0.427,0.3535,0.2997,0.3376,0.3562,0.3632,0.3569,0.3621,0.3612,0.3514,0.3546,0.34,0.3385,0.3461,0.3434,0.3664,0.3702,0.3505,0.3316,0.2273]
+};
+const WF_COLORS = {iphone:'rgba(245,240,232,.22)',polish:'#4a9eff',magic:'#f9c74f'};
+
+function drawWF(id) {
+  const c = document.getElementById('wf-'+id);
+  if(!c) return;
+  const W=c.offsetWidth, H=c.offsetHeight;
+  c.width=W; c.height=H;
+  const ctx=c.getContext('2d');
+  const data=WF[id];
+  const n=data.length;
+  const barW = Math.max(1, W/n * 0.55); // 얇은 바
+  const gap = W/n;
+  
+  data.forEach((v,i)=>{
+    const bh = Math.max(2, v * H * 0.88);
+    const x = i * gap + (gap - barW) / 2;
+    const y = (H - bh) / 2;
+    
+    // 그라디언트 — 중심이 밝고 위아래로 투명해짐
+    const grad = ctx.createLinearGradient(0, y, 0, y+bh);
+    const col = WF_COLORS[id];
+    if(col.startsWith('rgba')){
+      grad.addColorStop(0, col.replace(/[\d.]+\)$/, '0.08)'));
+      grad.addColorStop(0.3, col.replace(/[\d.]+\)$/, '0.35)'));
+      grad.addColorStop(0.5, col.replace(/[\d.]+\)$/, '0.55)'));
+      grad.addColorStop(0.7, col.replace(/[\d.]+\)$/, '0.35)'));
+      grad.addColorStop(1, col.replace(/[\d.]+\)$/, '0.08)'));
+    } else {
+      grad.addColorStop(0, col+'18');
+      grad.addColorStop(0.3, col+'88');
+      grad.addColorStop(0.5, col+'ff');
+      grad.addColorStop(0.7, col+'88');
+      grad.addColorStop(1, col+'18');
+    }
+    ctx.fillStyle = grad;
+    ctx.fillRect(x, y, barW, bh);
+  });
+}
+window.addEventListener('load',()=>setTimeout(()=>['iphone','polish','magic'].forEach(drawWF),100));
+window.addEventListener('resize',()=>['iphone','polish','magic'].forEach(drawWF));
+
+// ── Players ──
+let playing=null;
+const AU={};
+['iphone','polish','magic'].forEach(id=>{
+  AU[id]=document.getElementById('audio-'+id);
+  AU[id].addEventListener('timeupdate',()=>updateProg(id));
+  AU[id].addEventListener('ended',()=>resetPl(id));
+});
+
+function togglePlay(id){
+  if(playing&&playing!==id){AU[playing].pause();resetPl(playing);}
+  const a=AU[id];
+  if(a.paused){a.play();playing=id;document.getElementById('icon-'+id).innerHTML='<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';}
+  else{a.pause();playing=null;document.getElementById('icon-'+id).innerHTML='<path d="M8 5v14l11-7z"/>';}
+}
+function updateProg(id){
+  const a=AU[id],p=(a.currentTime/a.duration)*100;
+  document.getElementById('fill-'+id).style.width=p+'%';
+  document.getElementById('ph-'+id).style.left=p+'%';
+  const m=Math.floor(a.currentTime/60),s=String(Math.floor(a.currentTime%60)).padStart(2,'0');
+  document.getElementById('time-'+id).textContent=m+':'+s;
+}
+function resetPl(id){
+  document.getElementById('fill-'+id).style.width='0%';
+  document.getElementById('ph-'+id).style.left='0%';
+  document.getElementById('time-'+id).textContent='0:00';
+  document.getElementById('icon-'+id).innerHTML='<path d="M8 5v14l11-7z"/>';
+}
+function seekAudio(id,e){
+  const a=AU[id],r=e.currentTarget.getBoundingClientRect();
+  a.currentTime=((e.clientX-r.left)/r.width)*a.duration;
+}
+
+// ── File Upload & Validation ──
+const MAX_DUR=300;
+let fileOk=false, uploadedFile=null;
+
+function handleFile(file){
+  if(!file)return;
+  const ext=file.name.split('.').pop().toLowerCase();
+  if(!['wav','mp3'].includes(ext)){showV('fail','Unsupported Format','Please upload a WAV or MP3 file.');return;}
+
+  showV('ok','Checking file...','Please wait.');
+
+  // Client-side duration check first
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    ctx.decodeAudioData(e.target.result.slice(0),buf=>{
+      if(buf.duration>MAX_DUR){
+        showV('fail','File Too Long',`Your file is ${Math.floor(buf.duration/60)}:${String(Math.floor(buf.duration%60)).padStart(2,'0')} — maximum is 5 minutes.`);
+        return;
+      }
+      // Upload to server for full validation
+      uploadToServer(file);
+    },()=>showV('fail','Read Error','Could not read your audio file. Please try again.'));
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+async function uploadToServer(file){
+  const formData = new FormData();
+  formData.append('audio', file);
+  try {
+    const res = await fetch(`${SERVER}/api/upload`, { method:'POST', body:formData });
+    const data = await res.json();
+    if(data.valid){
+      const m=Math.floor(data.duration/60), s=String(data.duration%60).padStart(2,'0');
+      showV('ok','✓ File Accepted',`"${file.name}" — ${m}:${s} · Ready for processing.`);
+      uploadedFileId = data.fileId;
+      uploadedFile = file;
+      fileOk = true;
+      document.getElementById('ytbucksWrap').classList.add('show');
+      document.getElementById('planPick').classList.add('show');
+    } else {
+      showV('fail','File Not Eligible', data.error || 'This file does not meet our guidelines.');
+    }
+  } catch(err){
+    showV('fail','Upload Failed','Could not reach the server. Please try again.');
+  }
+}
+
+function showV(type,title,msg){
+  const el=document.getElementById('vResult');
+  el.className='v-result show '+type;
+  document.getElementById('vTitle').textContent=title;
+  document.getElementById('vMsg').textContent=msg;
+  if(type!=='ok'){
+    fileOk=false;
+    document.getElementById('planPick').classList.remove('show');
+    document.getElementById('ytbucksWrap').classList.remove('show');
+    document.getElementById('submitBtn').classList.remove('show');
+    document.getElementById('emailWrap').classList.remove('show');
+    selPlan=null;
+  }
+}
+
+// ── YT Bucks ──
+async function redeemYTBucks(){
+  const code = document.getElementById('ytbucksInput').value.trim();
+  if(!code) return;
+  const statusEl = document.getElementById('ytbucksStatus');
+  statusEl.textContent = 'Checking...';
+  statusEl.className = 'ytbucks-status';
+  try {
+    const res = await fetch(`${SERVER}/api/validate-ytbucks`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({code})
+    });
+    const data = await res.json();
+    if(data.valid){
+      statusEl.textContent = `✓ ${data.msg} — ${data.plan === 'any' ? 'Both plans' : 'YT ' + data.plan.charAt(0).toUpperCase() + data.plan.slice(1)} unlocked free`;
+      statusEl.className = 'ytbucks-status ok';
+      ytbucksApplied = code;
+      // Auto-select plan if specified
+      if(data.plan !== 'any') selectPlan(data.plan);
+    } else {
+      statusEl.textContent = `✗ ${data.msg}`;
+      statusEl.className = 'ytbucks-status fail';
+      ytbucksApplied = false;
+    }
+  } catch(e){
+    statusEl.textContent = 'Could not verify code. Try again.';
+    statusEl.className = 'ytbucks-status fail';
+  }
+}
+
+// ── Plan Selection ──
+function selectPlan(plan){
+  selPlan=plan;
+  document.getElementById('polishBtn').className='plan-pick-btn'+(plan==='polish'?' p-active':'');
+  document.getElementById('magicBtn').className='plan-pick-btn'+(plan==='magic'?' m-active':'');
+  document.getElementById('emailWrap').classList.add('show');
+  const btn=document.getElementById('submitBtn');
+  if(ytbucksApplied){
+    btn.textContent = plan==='polish' ? 'Submit for YT Polish — FREE (YT Bucks) →' : 'Submit for YT Magic — FREE (YT Bucks) →';
+  } else {
+    btn.textContent = plan==='polish' ? 'Submit for YT Polish — $9.99 →' : 'Submit for YT Magic — $19.99 →';
+  }
+  btn.classList.add('show');
+}
+
+function selectAndScroll(plan){
+  document.getElementById('upload').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>{if(fileOk)selectPlan(plan);},800);
+}
+
+// ── Submit Order ──
+async function submitOrder(){
+  if(!fileOk||!selPlan) return;
+  const email = document.getElementById('emailInput').value.trim();
+  if(!email || !email.includes('@')){
+    document.getElementById('emailInput').style.borderColor='rgba(220,50,50,.5)';
+    return;
+  }
+
+  // YT Bucks — free
+  if(ytbucksApplied){
+    try {
+      const res = await fetch(`${SERVER}/api/create-payment`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({plan:selPlan, email, fileId:uploadedFileId, ytbucksCode:ytbucksApplied})
+      });
+      const data = await res.json();
+      if(data.free){
+        showSuccess();
+        return;
+      }
+    } catch(e){}
+  }
+
+  // Stripe payment
+  openModal();
+}
+
+// ── Stripe Modal ──
+function openModal(){
+  const modal = document.getElementById('payModal');
+  document.getElementById('modalTitle').textContent = selPlan==='polish' ? 'YT POLISH' : 'YT MAGIC';
+  document.getElementById('modalSub').textContent = selPlan==='polish' ? '$9.99 · Instant Delivery' : '$19.99 · Instant Delivery';
+  modal.classList.add('show');
+
+  // Init Stripe Elements
+  const elements = stripe.elements();
+  cardElement = elements.create('card', {
+    style:{base:{color:'#F5F0E8',fontFamily:'Inter, sans-serif',fontSize:'14px','::placeholder':{color:'rgba(245,240,232,.3)'}},invalid:{color:'#e05555'}}
+  });
+  cardElement.mount('#card-element');
+  cardElement.on('change', e=>{
+    document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+  });
+
+  // Get payment intent
+  fetch(`${SERVER}/api/create-payment`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({plan:selPlan, email:document.getElementById('emailInput').value.trim(), fileId:uploadedFileId})
+  }).then(r=>r.json()).then(d=>{ clientSecret=d.clientSecret; });
+}
+
+function closeModal(){
+  document.getElementById('payModal').classList.remove('show');
+}
+
+async function confirmPayment(){
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
+    payment_method:{card:cardElement}
+  });
+
+  if(error){
+    document.getElementById('card-errors').textContent = error.message;
+    btn.disabled=false;
+    btn.textContent='Pay Now →';
+  } else if(paymentIntent.status==='succeeded'){
+    document.getElementById('payForm').style.display='none';
+    document.getElementById('processingMsg').classList.add('show');
+    setTimeout(showSuccess, 3000);
+  }
+}
+
+function showSuccess(){
+  document.getElementById('payModal').classList.add('show');
+  document.getElementById('payForm').style.display='none';
+  document.getElementById('processingMsg').classList.remove('show');
+  document.getElementById('successMsg').classList.add('show');
+}
+
+// ── Drag & drop ──
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)handleFile(f);});
+
+
+// ── Language Toggle ──
+function setLang(lang) {
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const txt = el.getAttribute('data-' + lang);
+    if(txt) el.textContent = txt;
+  });
+  ['en','ko','es'].forEach(l => {
+    const btn = document.getElementById('lang-' + l);
+    if(btn) btn.style.color = l === lang ? 'var(--gold)' : 'rgba(245,240,232,.4)';
+  });
+  localStorage.setItem('ytlang', lang);
+}
+// Init language
+const savedLang = localStorage.getItem('ytlang') || 'en';
+setLang(savedLang);
+
+// ── Reveal ──
+const obs=new IntersectionObserver(entries=>entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>

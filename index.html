@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YT Creative Lab — Los Angeles</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--black:#050505;--gold:#C9A84C;--gold-light:#E8CC7A;--gold-dim:#7A6130;--white:#F5F0E8;--gray:#141414;--gray2:#1e1e1e;--gray3:#2a2a2a;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .15s ease;transform:translate(-50%,-50%);}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transition:width .3s,height .3s,opacity .3s;transform:translate(-50%,-50%);opacity:.6;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;z-index:800;opacity:.35;}
+
+/* LANG BAR */
+.lang-bar{background:#0a0a0a;border-bottom:1px solid rgba(201,168,76,.12);padding:10px 60px;display:flex;justify-content:flex-end;align-items:center;gap:6px;position:relative;z-index:600;}
+.lang-btn{background:none;border:1px solid transparent;color:rgba(245,240,232,.4);font-family:'Inter',sans-serif;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;padding:5px 14px;cursor:none;transition:all .3s;}
+.lang-btn:hover,.lang-btn.active{border-color:var(--gold);color:var(--gold);}
+.lang-sep{color:rgba(201,168,76,.2);font-size:.5rem;}
+
+/* NAV */
+nav{position:fixed;top:41px;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:20px 60px;background:linear-gradient(180deg,rgba(5,5,5,.97) 0%,transparent 100%);backdrop-filter:blur(4px);transition:top .3s;}
+nav.scrolled{top:0;background:rgba(5,5,5,.97);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo-img{width:42px;height:42px;border-radius:50%;object-fit:cover;object-position:center top;border:1.5px solid var(--gold);box-shadow:0 0 14px rgba(201,168,76,.35),0 0 0 3px rgba(201,168,76,.08);background:var(--gray2);}
+.nav-logo-text{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;letter-spacing:.25em;color:var(--gold);}
+.nav-logo-text span{color:var(--white);}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:.6;transition:opacity .3s,color .3s;}
+.nav-links a:hover{opacity:1;color:var(--gold);}
+.nav-cta{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--black);background:var(--gold);padding:11px 26px;text-decoration:none;transition:background .3s;position:relative;overflow:hidden;}
+.nav-cta::after{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.nav-cta:hover::after{transform:scaleX(1);}
+.nav-cta span{position:relative;z-index:1;}
+
+/* HERO */
+.hero{position:relative;height:100vh;display:flex;align-items:flex-end;overflow:hidden;}
+.hero-video-wrap{position:absolute;inset:0;z-index:0;background:var(--black);overflow:hidden;}
+/* Vertical 9:16 video — center crop */
+.hero-video-wrap iframe{position:absolute;top:50%;left:50%;height:177.78vw;width:100vw;min-height:100vh;min-width:56.25vh;transform:translate(-50%,-50%);pointer-events:none;border:none;}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(5,5,5,.4) 0%,rgba(5,5,5,.15) 40%,rgba(5,5,5,.85) 100%),linear-gradient(90deg,rgba(5,5,5,.75) 0%,transparent 55%);}
+.hero-grain{position:absolute;inset:0;z-index:2;background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0px,rgba(0,0,0,.03) 1px,transparent 1px,transparent 2px);pointer-events:none;}
+
+.eq-bars{position:absolute;right:7%;bottom:18%;display:flex;gap:5px;align-items:flex-end;height:100px;opacity:.18;z-index:3;}
+.eq-bar{width:3px;background:linear-gradient(0deg,var(--gold-dim),var(--gold));border-radius:2px;animation:eq 1.2s ease-in-out infinite alternate;}
+.eq-bar:nth-child(1){animation-duration:.9s;}
+.eq-bar:nth-child(2){animation-duration:1.1s;animation-delay:.1s;}
+.eq-bar:nth-child(3){animation-duration:.7s;animation-delay:.2s;}
+.eq-bar:nth-child(4){animation-duration:1.3s;animation-delay:.05s;}
+.eq-bar:nth-child(5){animation-duration:.8s;animation-delay:.15s;}
+.eq-bar:nth-child(6){animation-duration:1s;animation-delay:.3s;}
+.eq-bar:nth-child(7){animation-duration:.6s;animation-delay:.1s;}
+.eq-bar:nth-child(8){animation-duration:1.15s;animation-delay:.25s;}
+@keyframes eq{from{height:12px;}to{height:100%;}}
+
+.hero-content{position:relative;z-index:5;padding:0 60px 80px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:12px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);padding:7px 18px;margin-bottom:28px;backdrop-filter:blur(8px);}
+.hero-badge-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-badge-text{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,9vw,8.5rem);line-height:.88;letter-spacing:.03em;color:var(--white);text-shadow:0 0 80px rgba(0,0,0,.9);margin-bottom:6px;}
+.hero-title .gold{color:var(--gold);}
+.hero-title .outline{-webkit-text-stroke:1px rgba(245,240,232,.3);color:transparent;}
+.hero-slogan{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.6rem);font-weight:300;font-style:italic;color:rgba(245,240,232,.8);letter-spacing:.06em;margin-bottom:36px;text-shadow:0 2px 20px rgba(0,0,0,.9);}
+.hero-location{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,232,.4);margin-bottom:44px;display:flex;align-items:center;gap:10px;}
+.hero-location::before{content:'';width:30px;height:1px;background:rgba(201,168,76,.4);}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--black);background:var(--gold);padding:15px 38px;text-decoration:none;position:relative;overflow:hidden;transition:color .3s;}
+.btn-primary::after{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.btn-primary:hover::after{transform:scaleX(1);}
+.btn-primary span{position:relative;z-index:1;}
+.btn-ghost{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,240,232,.7);border:1px solid rgba(245,240,232,.2);padding:15px 38px;text-decoration:none;transition:border-color .3s,color .3s;backdrop-filter:blur(4px);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+.mute-btn{position:absolute;bottom:30px;right:50px;z-index:10;display:flex;align-items:center;gap:9px;background:rgba(5,5,5,.65);border:1px solid rgba(201,168,76,.35);color:var(--white);padding:11px 20px;font-family:'Inter',sans-serif;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;cursor:none;transition:border-color .3s,background .3s;backdrop-filter:blur(10px);}
+.mute-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.08);}
+.mute-btn.unmuted{border-color:var(--gold);}
+.mute-btn.unmuted .mute-label{color:var(--gold);}
+.mute-label{color:rgba(245,240,232,.6);}
+
+/* MARQUEE */
+.marquee-wrap{overflow:hidden;border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.12);padding:14px 0;background:rgba(201,168,76,.02);}
+.marquee-track{display:flex;gap:50px;animation:marquee 30s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:.3em;color:var(--gold-dim);flex-shrink:0;}
+.marquee-dot{color:var(--gold);font-size:.45rem;vertical-align:middle;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTIONS */
+section{padding:110px 60px;}
+.section-eyebrow{font-size:.6rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4.5vw,4rem);line-height:1;letter-spacing:.04em;margin-bottom:16px;}
+.section-sub{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(245,240,232,.45);margin-bottom:56px;}
+
+/* THREE A's */
+.three-as{background:var(--black);}
+.three-as-intro{max-width:700px;margin-bottom:70px;}
+.three-as-intro p{font-size:.85rem;line-height:1.95;color:rgba(245,240,232,.5);margin-top:16px;}
+.three-as-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+.a-card{background:var(--gray);padding:52px 40px;position:relative;overflow:hidden;transition:background .4s;border-top:2px solid transparent;}
+.a-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.06) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
+.a-card:hover{background:var(--gray2);border-top-color:var(--gold);}
+.a-card:hover::before{opacity:1;}
+.a-letter{font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(201,168,76,.07);line-height:1;position:absolute;top:20px;right:30px;transition:color .4s;}
+.a-card:hover .a-letter{color:rgba(201,168,76,.14);}
+.a-icon{font-size:2rem;margin-bottom:24px;}
+.a-title{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.1em;color:var(--white);margin-bottom:4px;}
+.a-subtitle{font-size:.68rem;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;}
+.a-desc{font-size:.78rem;line-height:1.85;color:rgba(245,240,232,.48);}
+.a-tag{display:inline-block;margin-top:20px;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(201,168,76,.25);color:rgba(201,168,76,.6);padding:5px 14px;}
+
+/* ABOUT */
+.about{background:linear-gradient(135deg,#080808 0%,var(--black) 100%);display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;}
+.about-logo-wrap{position:relative;}
+.about-logo-box{position:relative;overflow:hidden;background:var(--gray2);}
+.about-logo-box::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(5,5,5,.85) 100%);z-index:1;pointer-events:none;}
+.about-profile-img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;display:block;}
+.about-logo-overlay{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:24px 28px;display:flex;align-items:center;gap:16px;}
+.about-logo-circle{width:72px;height:72px;border-radius:50%;overflow:hidden;border:2px solid var(--gold);box-shadow:0 0 20px rgba(201,168,76,.35);flex-shrink:0;}
+.about-logo-circle img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+.about-logo-overlay .ceo-tag{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(245,240,232,.45);margin-bottom:8px;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:3px;}
+.about-stat-box{background:var(--gray2);padding:28px 32px;}
+.about-stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--gold);line-height:1;}
+.about-stat-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.4);margin-top:4px;}
+.about-corner{position:absolute;bottom:-16px;right:-16px;width:70px;height:70px;border:1px solid var(--gold-dim);}
+.about-text p{font-size:.83rem;line-height:2;color:rgba(245,240,232,.52);margin-bottom:14px;}
+.about-quote{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;color:var(--gold);border-left:2px solid var(--gold);padding-left:22px;margin:36px 0;line-height:1.65;}
+.about-lang-tabs{display:flex;gap:2px;margin-bottom:30px;}
+.lang-tab{background:var(--gray2);border:none;color:rgba(245,240,232,.4);font-family:'Inter',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;padding:9px 20px;cursor:none;transition:all .3s;}
+.lang-tab.active,.lang-tab:hover{background:var(--gold);color:var(--black);}
+.about-copy{display:none;}
+.about-copy.active{display:block;}
+
+/* LIVE STUDIO */
+.live-studio{background:var(--gray);}
+.live-studio-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.live-video-frame{position:relative;background:var(--gray2);overflow:hidden;border:1px solid rgba(201,168,76,.2);max-width:100%;margin:0 auto;box-shadow:0 0 40px rgba(201,168,76,.1);}
+.live-badge{position:absolute;top:16px;left:16px;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(5,5,5,.8);border:1px solid rgba(255,60,60,.5);padding:6px 14px;backdrop-filter:blur(8px);}
+.live-dot{width:7px;height:7px;background:#ff3c3c;border-radius:50%;animation:pulse 1.5s ease-in-out infinite;}
+.live-badge-text{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:#ff8080;}
+/* Vertical 9:16 - show top 65% = face/upper body area */
+.live-video-frame .video-shell{position:relative;width:100%;overflow:hidden;background:#000;padding-bottom:177.78%;}
+.live-video-frame .video-shell iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.live-features{margin-top:30px;display:flex;flex-direction:column;gap:3px;}
+.live-feat{display:flex;align-items:center;gap:16px;background:var(--gray2);padding:18px 24px;transition:background .3s;}
+.live-feat:hover{background:var(--gray3);}
+.live-feat-icon{font-size:1.2rem;flex-shrink:0;}
+.live-feat-text{font-size:.75rem;letter-spacing:.05em;color:rgba(245,240,232,.55);line-height:1.5;}
+.live-feat-text strong{color:var(--white);display:block;font-weight:400;margin-bottom:2px;font-size:.78rem;}
+.live-text .section-title{margin-bottom:10px;}
+.live-desc{font-size:.82rem;line-height:1.95;color:rgba(245,240,232,.5);margin-bottom:24px;}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:36px;}
+.spec-box{background:var(--gray2);padding:22px 24px;border-top:1px solid transparent;transition:border-color .3s;}
+.spec-box:hover{border-top-color:var(--gold);}
+.spec-label{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.spec-value{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--white);}
+
+/* SERVICES strip */
+.services-strip{background:var(--black);}
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px;}
+.svc-card{background:var(--gray);padding:42px 32px;position:relative;overflow:hidden;transition:background .4s;border-top:2px solid transparent;}
+.svc-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.05) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
+.svc-card:hover{background:var(--gray2);border-top-color:var(--gold);}
+.svc-card:hover::before{opacity:1;}
+.svc-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(201,168,76,.08);line-height:1;margin-bottom:20px;transition:color .4s;}
+.svc-card:hover .svc-num{color:rgba(201,168,76,.16);}
+.svc-icon{font-size:1.7rem;margin-bottom:18px;}
+.svc-name{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.08em;color:var(--white);margin-bottom:12px;}
+.svc-desc{font-size:.75rem;line-height:1.8;color:rgba(245,240,232,.45);}
+
+/* DOLBY ATMOS BANNER */
+.atmos-banner{background:linear-gradient(135deg,#080808 0%,#0d0a03 100%);border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.12);padding:70px 60px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;}
+.atmos-left{}
+.atmos-eyebrow{font-size:.58rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.atmos-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);letter-spacing:.05em;line-height:1;}
+.atmos-title span{color:var(--gold);}
+.atmos-desc{font-size:.8rem;line-height:1.9;color:rgba(245,240,232,.45);max-width:500px;margin-top:16px;}
+.atmos-badges{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.atmos-badge{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(201,168,76,.25);color:rgba(201,168,76,.7);padding:7px 16px;}
+
+/* STUDIO GALLERY */
+.gallery{background:var(--black);}
+.gallery-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto;gap:3px;margin-top:56px;}
+.gallery-item{background:var(--gray2);position:relative;overflow:hidden;}
+.gallery-item:first-child{grid-row:1/3;}
+.gallery-ph{width:100%;height:100%;min-height:240px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:rgba(245,240,232,.18);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;}
+.gallery-ph-icon{font-size:1.8rem;opacity:.25;}
+.gallery-ol{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,5,5,.75) 0%,transparent 50%);display:flex;align-items:flex-end;padding:22px;opacity:0;transition:opacity .4s;}
+.gallery-item:hover .gallery-ol{opacity:1;}
+.gallery-ol-label{font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.15em;color:var(--gold);}
+
+/* GOODS */
+.goods{background:linear-gradient(180deg,var(--black) 0%,#070707 100%);text-align:center;}
+.goods-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:56px;}
+.good-item{background:var(--gray);aspect-ratio:3/4;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;transition:background .4s;}
+.good-item:hover{background:var(--gray2);}
+.good-icon{font-size:2.2rem;opacity:.22;}
+.good-name{font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:.2em;color:rgba(245,240,232,.35);}
+.good-soon{position:absolute;top:14px;right:14px;font-size:.52rem;letter-spacing:.2em;color:var(--gold);border:1px solid var(--gold-dim);padding:4px 10px;}
+.good-item.featured{background:linear-gradient(135deg,#1a1508 0%,var(--gray) 100%);border:1px solid rgba(201,168,76,.18);}
+.good-item.featured .good-icon{opacity:.45;}
+.good-item.featured .good-name{color:var(--gold);}
+
+/* CONTACT */
+.contact{background:var(--gray);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.contact-info-item{margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid rgba(201,168,76,.08);}
+.contact-info-item:last-child{border:none;}
+.ci-label{font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.ci-value{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--white);}
+.ci-value a{color:var(--white);text-decoration:none;}
+.form-group{margin-bottom:22px;}
+.form-label{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,232,.35);display:block;margin-bottom:9px;}
+.form-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(201,168,76,.18);padding:11px 0;color:var(--white);font-family:'Inter',sans-serif;font-size:.82rem;font-weight:300;outline:none;transition:border-color .3s;}
+.form-input:focus{border-bottom-color:var(--gold);}
+.form-input::placeholder{color:rgba(245,240,232,.18);}
+textarea.form-input{resize:none;height:75px;}
+.form-submit{width:100%;background:var(--gold);color:var(--black);border:none;padding:17px;font-family:'Inter',sans-serif;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;cursor:none;transition:background .3s;margin-top:6px;}
+.form-submit:hover{background:var(--gold-light);}
+
+/* FOOTER */
+footer{background:var(--black);padding:60px;border-top:1px solid rgba(201,168,76,.08);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px;}
+.footer-logo img{height:36px;width:auto;filter:drop-shadow(0 0 8px rgba(201,168,76,.2));}
+.footer-copy{font-size:.58rem;letter-spacing:.15em;color:rgba(245,240,232,.2);text-transform:uppercase;text-align:center;}
+.footer-socials{display:flex;gap:22px;justify-content:flex-end;}
+.footer-socials a{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.3);text-decoration:none;transition:color .3s;}
+.footer-socials a:hover{color:var(--gold);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  nav{padding:20px 24px;}
+  .nav-links{display:none;}
+  .lang-bar{padding:10px 24px;}
+  section{padding:80px 24px;}
+  .hero-content{padding:0 24px 70px;}
+  .three-as-grid,.about,.live-studio-inner,.contact{grid-template-columns:1fr;gap:40px;}
+  .services-grid{grid-template-columns:1fr 1fr;}
+  .goods-grid{grid-template-columns:1fr 1fr;}
+  .gallery-grid{grid-template-columns:1fr 1fr;}
+  .gallery-item:first-child{grid-row:auto;}
+  footer{grid-template-columns:1fr;text-align:center;padding:40px 24px;}
+  .footer-socials{justify-content:center;}
+  .atmos-banner{padding:50px 24px;}
+  .spec-grid{grid-template-columns:1fr;}
+  .mute-btn{right:18px;bottom:24px;}
+}
+
+/* NEW RELEASE BANNER */
+.release-banner{background:linear-gradient(135deg,#0a0803 0%,#12100a 100%);border-bottom:1px solid rgba(201,168,76,.15);padding:0;}
+.release-inner{display:flex;align-items:stretch;overflow:hidden;}
+.release-img-wrap{width:220px;flex-shrink:0;position:relative;overflow:hidden;}
+.release-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.8);}
+.release-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(10,8,3,.6));}
+.release-content{flex:1;padding:32px 48px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;}
+.release-left{}
+.release-new{font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);display:inline-block;padding:5px 14px;margin-bottom:14px;}
+.release-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:.06em;line-height:1;color:var(--white);margin-bottom:6px;}
+.release-artist{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1rem;color:rgba(201,168,76,.7);letter-spacing:.1em;}
+.release-listen{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.release-btn{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:11px 28px;text-decoration:none;transition:all .3s;}
+.release-btn.primary{background:var(--gold);color:var(--black);}
+.release-btn.primary:hover{background:var(--gold-light);}
+.release-btn.outline{border:1px solid rgba(201,168,76,.35);color:var(--gold);}
+.release-btn.outline:hover{border-color:var(--gold);background:rgba(201,168,76,.08);}
+@media(max-width:960px){.release-inner{flex-direction:column;}.release-img-wrap{width:100%;height:220px;}.release-img-wrap img{object-position:center 20%;}.release-content{padding:24px;}}
+
+.live-mute-btn{position:absolute;bottom:16px;right:16px;z-index:10;display:flex;align-items:center;gap:8px;background:rgba(5,5,5,.75);border:1px solid rgba(201,168,76,.4);color:var(--white);padding:9px 16px;font-family:"Inter",sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;cursor:none;transition:all .3s;backdrop-filter:blur(10px);}
+.live-mute-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.12);}
+.live-mute-btn.unmuted{border-color:var(--gold);}
+.live-mute-btn.unmuted #liveMuteLabel{color:var(--gold);}
+
+.logo-circle{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;background:#fff;border:2px solid var(--gold);box-shadow:0 0 16px rgba(201,168,76,.3);}
+.logo-circle img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;}
+
+/* STREAMING PLATFORMS */
+.platforms{background:#080808;padding:70px 60px;border-top:1px solid rgba(201,168,76,.08);border-bottom:1px solid rgba(201,168,76,.08);}
+.platforms-eyebrow{font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:14px;}
+.platforms-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);letter-spacing:.06em;text-align:center;margin-bottom:8px;}
+.platforms-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:.95rem;color:rgba(245,240,232,.4);text-align:center;margin-bottom:52px;}
+.platforms-track{overflow:hidden;position:relative;}
+.platforms-track::before{content:"";position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(90deg,#080808,transparent);z-index:2;pointer-events:none;}
+.platforms-track::after{content:"";position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(270deg,#080808,transparent);z-index:2;pointer-events:none;}
+.platforms-row{display:flex;gap:16px;animation:platformScroll 35s linear infinite;white-space:nowrap;margin-bottom:14px;}
+.platforms-row.reverse{animation:platformScrollRev 30s linear infinite;}
+@keyframes platformScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes platformScrollRev{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+.platform-pill{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:50px;font-size:.72rem;font-weight:500;letter-spacing:.08em;flex-shrink:0;transition:transform .3s,box-shadow .3s;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);}
+.platform-pill:hover{transform:scale(1.06);box-shadow:0 4px 20px rgba(0,0,0,.4);}
+.platform-pill .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+/* Global */
+.pp-spotify{color:#1DB954;border-color:rgba(29,185,84,.2);}.pp-spotify .dot{background:#1DB954;}
+.pp-apple{color:#fc3c44;border-color:rgba(252,60,68,.2);}.pp-apple .dot{background:#fc3c44;}
+.pp-youtube{color:#FF0000;border-color:rgba(255,0,0,.2);}.pp-youtube .dot{background:#FF0000;}
+.pp-amazon{color:#00A8E0;border-color:rgba(0,168,224,.2);}.pp-amazon .dot{background:#00A8E0;}
+.pp-tidal{color:#e8f4f8;border-color:rgba(232,244,248,.15);}.pp-tidal .dot{background:#e8f4f8;}
+.pp-pandora{color:#3668FF;border-color:rgba(54,104,255,.2);}.pp-pandora .dot{background:#3668FF;}
+.pp-deezer{color:#A238FF;border-color:rgba(162,56,255,.2);}.pp-deezer .dot{background:#A238FF;}
+.pp-iheart{color:#C6002B;border-color:rgba(198,0,43,.2);}.pp-iheart .dot{background:#C6002B;}
+.pp-tiktok{color:#69C9D0;border-color:rgba(105,201,208,.2);}.pp-tiktok .dot{background:#69C9D0;}
+.pp-soundcloud{color:#FF5500;border-color:rgba(255,85,0,.2);}.pp-soundcloud .dot{background:#FF5500;}
+/* Korean */
+.pp-melon{color:#00CD3C;border-color:rgba(0,205,60,.2);}.pp-melon .dot{background:#00CD3C;}
+.pp-vibe{color:#00D2C8;border-color:rgba(0,210,200,.2);}.pp-vibe .dot{background:#00D2C8;}
+.pp-bugs{color:#FF3D00;border-color:rgba(255,61,0,.2);}.pp-bugs .dot{background:#FF3D00;}
+.pp-genie{color:#006EFF;border-color:rgba(0,110,255,.2);}.pp-genie .dot{background:#006EFF;}
+.pp-flo{color:#7B5EA7;border-color:rgba(123,94,167,.2);}.pp-flo .dot{background:#7B5EA7;}
+@media(max-width:960px){.platforms{padding:50px 20px;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LANGUAGE BAR -->
+<div class="lang-bar" id="langBar">
+  <button class="lang-btn active" onclick="setLang('en')">ENG</button>
+  <span class="lang-sep">|</span>
+  <button class="lang-btn" onclick="setLang('ko')">한국어</button>
+  <span class="lang-sep">|</span>
+  <button class="lang-btn" onclick="setLang('es')">ESP</button>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="logo-circle" style="width:40px;height:40px;flex-shrink:0;">
+      <img src="./yt_logo.jpg" alt="YT" onerror="this.style.display='none'">
+    </div>
+    <div class="nav-logo-text">YT <span>CREATIVE LAB</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#three-as" data-en="Services" data-ko="서비스" data-es="Servicios">Services</a></li>
+    <li><a href="#about" data-en="About" data-ko="소개" data-es="Nosotros">About</a></li>
+    <li><a href="#live" data-en="Live Studio" data-ko="라이브" data-es="Estudio">Live Studio</a></li>
+    <li><a href="#gallery" data-en="Studio" data-ko="스튜디오" data-es="Estudio">Studio</a></li>
+    <li><a href="#goods" data-en="Goods" data-ko="굿즈" data-es="Tienda">Goods</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta"><span data-en="Book Now" data-ko="예약하기" data-es="Reservar">Book Now</span></a>
+</nav>
+
+
+<!-- NEW RELEASE BANNER -->
+<div class="release-banner reveal">
+  <div class="release-inner">
+    <div class="release-img-wrap">
+      <img src="./yt_profile.jpg" alt="YT" onerror="this.style.display='none'">
+    </div>
+    <div class="release-content">
+      <div class="release-left">
+        <div class="release-new">🎵 New Release — Out Now</div>
+        <div class="release-title">DON'T BE AFRAID</div>
+        <div class="release-artist">YT · Single 2026</div>
+      </div>
+      <div class="release-listen">
+        <a href="https://distrokid.com/hyperfollow/yt42/dont-be-afraid" target="_blank" class="release-btn primary">🎧 Listen Now</a>
+        <a href="https://www.youtube.com/watch?v=ck_3I4xBUtw" target="_blank" class="release-btn outline">▶ Watch on YouTube</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video-wrap">
+    <!-- 9:16 vertical video, start at 42:30 = 2550s -->
+    <iframe id="ytPlayer"
+      src="https://www.youtube.com/embed/ck_3I4xBUtw?autoplay=1&mute=1&loop=1&playlist=ck_3I4xBUtw&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=1"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grain"></div>
+  <div class="eq-bars">
+    <div class="eq-bar" style="height:28px"></div>
+    <div class="eq-bar" style="height:65px"></div>
+    <div class="eq-bar" style="height:45px"></div>
+    <div class="eq-bar" style="height:88px"></div>
+    <div class="eq-bar" style="height:38px"></div>
+    <div class="eq-bar" style="height:75px"></div>
+    <div class="eq-bar" style="height:52px"></div>
+    <div class="eq-bar" style="height:62px"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span class="hero-badge-text" data-en="Los Angeles · Full Service Recording &amp; Entertainment" data-ko="로스앤젤레스 · 풀서비스 레코딩 &amp; 엔터테인먼트" data-es="Los Ángeles · Grabación y Entretenimiento Completo">Los Angeles · Full Service Recording &amp; Entertainment</span>
+    </div>
+    <h1 class="hero-title">
+      YT<br>
+      <span class="gold">CREATIVE</span><br>
+      <span class="outline">LAB</span>
+    </h1>
+    <p class="hero-slogan" data-en="Where Your Music &amp; Dream Collide" data-ko="당신의 음악과 꿈이 만나는 곳" data-es="Donde Tu Música y Tu Sueño Colisionan">Where Your Music &amp; Dream Collide</p>
+    <p class="hero-location" data-en="Los Angeles, California · ytrules.com" data-ko="로스앤젤레스, 캘리포니아 · ytrules.com" data-es="Los Ángeles, California · ytrules.com">Los Angeles, California · ytrules.com</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary"><span data-en="Book Your Session" data-ko="세션 예약하기" data-es="Reserva Tu Sesión">Book Your Session</span></a>
+      <a href="#three-as" class="btn-ghost" data-en="Explore Services" data-ko="서비스 보기" data-es="Ver Servicios">Explore Services</a>
+    </div>
+  </div>
+
+  <button class="mute-btn" id="muteBtn" onclick="toggleMute()">
+    <span id="muteIcon">🔇</span>
+    <span class="mute-label" id="muteLabel" data-en="Unmute" data-ko="소리 켜기" data-es="Activar sonido">Unmute</span>
+  </button>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">RECORDING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">MIXING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">MASTERING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">DOLBY ATMOS</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">LIVE STREAMING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">REHEARSAL</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">MUSIC EDUCATION</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">LOS ANGELES</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">20+ YEARS</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">YT CREATIVE LAB</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">RECORDING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">MIXING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">MASTERING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">DOLBY ATMOS</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">LIVE STREAMING</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">REHEARSAL</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">MUSIC EDUCATION</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">LOS ANGELES</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">20+ YEARS</span><span class="marquee-dot"> ◆ </span>
+    <span class="marquee-item">YT CREATIVE LAB</span><span class="marquee-dot"> ◆ </span>
+  </div>
+</div>
+
+<!-- THREE A's -->
+<section class="three-as" id="three-as">
+  <div class="three-as-intro reveal">
+    <div class="section-eyebrow" data-en="The Philosophy" data-ko="우리의 철학" data-es="La Filosofía">The Philosophy</div>
+    <h2 class="section-title" data-en="THE THREE A's" data-ko="3개의 A" data-es="LAS TRES A's">THE THREE A's</h2>
+    <p data-en="Everything we do revolves around three pillars — built for artists, craftsmen, and the next generation of music makers in greater Los Angeles." data-ko="우리가 하는 모든 것은 세 가지 기둥을 중심으로 돌아갑니다 — 아티스트, 장인, 그리고 로스앤젤레스의 차세대 음악 메이커들을 위해." data-es="Todo lo que hacemos gira en torno a tres pilares — construido para artistas, artesanos y la próxima generación de creadores musicales en Los Ángeles.">Everything we do revolves around three pillars — built for artists, craftsmen, and the next generation of music makers in greater Los Angeles.</p>
+  </div>
+  <div class="three-as-grid reveal">
+    <div class="a-card">
+      <div class="a-letter">A</div>
+      <div class="a-icon">🎤</div>
+      <div class="a-title" data-en="ARTIST" data-ko="아티스트" data-es="ARTISTA">ARTIST</div>
+      <div class="a-subtitle" data-en="Original Acts &amp; Recording" data-ko="오리지널 아티스트 &amp; 레코딩" data-es="Actos Originales y Grabación">Original Acts &amp; Recording</div>
+      <div class="a-desc" data-en="We work with original artists from demo to final release — helping you craft your sound with world-class equipment and the experienced ears of our engineering team. Whether it's your first single or a follow-up to a chart-topper, you get the same elite treatment." data-ko="데모부터 최종 발매까지 오리지널 아티스트와 함께합니다. 월드클래스 장비와 베테랑 엔지니어링 팀으로 당신만의 사운드를 만들어 드립니다." data-es="Trabajamos con artistas originales desde demo hasta lanzamiento final — ayudándote a crear tu sonido con equipos de clase mundial.">We work with original artists from demo to final release — helping you craft your sound with world-class equipment and the experienced ears of our engineering team. Whether it's your first single or a follow-up to a chart-topper, you get the same elite treatment.</div>
+      <span class="a-tag" data-en="Recording · Producing · Release" data-ko="레코딩 · 프로듀싱 · 발매" data-es="Grabación · Producción · Lanzamiento">Recording · Producing · Release</span>
+    </div>
+    <div class="a-card">
+      <div class="a-letter">A</div>
+      <div class="a-icon">🎛️</div>
+      <div class="a-title" data-en="ARTISAN" data-ko="아티산" data-es="ARTESANO">ARTISAN</div>
+      <div class="a-subtitle" data-en="Mixing, Mastering &amp; Sessions" data-ko="믹싱, 마스터링 &amp; 세션" data-es="Mezcla, Masterización y Sesiones">Mixing, Mastering &amp; Sessions</div>
+      <div class="a-desc" data-en="Our highly experienced engineers specialize in making the final creative adjustments that optimize recordings for maximum effectiveness — for commercial release, promotional or demo use. We proudly offer Dolby Atmos mixing &amp; mastering." data-ko="숙련된 엔지니어들이 최대 효과를 위한 최종 창의적 조정을 전문으로 합니다. Dolby Atmos 믹싱 &amp; 마스터링도 제공합니다." data-es="Nuestros ingenieros especializados realizan los ajustes creativos finales para optimizar las grabaciones. Ofrecemos mezcla y masterización en Dolby Atmos.">Our highly experienced engineers specialize in making the final creative adjustments that optimize recordings for maximum effectiveness — for commercial release, promotional or demo use. We proudly offer Dolby Atmos mixing &amp; mastering.</div>
+      <span class="a-tag" data-en="Mixing · Mastering · Dolby Atmos" data-ko="믹싱 · 마스터링 · 돌비 애트모스" data-es="Mezcla · Masterización · Dolby Atmos">Mixing · Mastering · Dolby Atmos</span>
+    </div>
+    <div class="a-card">
+      <div class="a-letter">A</div>
+      <div class="a-icon">🎓</div>
+      <div class="a-title" data-en="APPRENTICE" data-ko="어프렌티스" data-es="APRENDIZ">APPRENTICE</div>
+      <div class="a-subtitle" data-en="Education, Lessons &amp; Local Artists" data-ko="교육, 레슨 &amp; 로컬 뮤지션 지원" data-es="Educación, Lecciones y Apoyo Local">Education, Lessons &amp; Local Artists</div>
+      <div class="a-desc" data-en="We sweat every day developing local talent. From music lessons to artist development — we invest in the next generation of LA musicians. This is bigger than a studio. This is community." data-ko="로컬 아티스트 발굴을 위해 오늘도 땀을 흘립니다. 음악 레슨부터 아티스트 개발까지 — LA 차세대 뮤지션에 투자합니다. 이것은 스튜디오 그 이상입니다. 커뮤니티입니다." data-es="Sudamos cada día desarrollando el talento local. Desde clases de música hasta desarrollo artístico — invertimos en la próxima generación de músicos de LA.">We sweat every day developing local talent. From music lessons to artist development — we invest in the next generation of LA musicians. This is bigger than a studio. This is community.</div>
+      <span class="a-tag" data-en="Education · Development · Community" data-ko="교육 · 개발 · 커뮤니티" data-es="Educación · Desarrollo · Comunidad">Education · Development · Community</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-logo-wrap reveal">
+    <div class="about-logo-box">
+      <img class="about-profile-img" src="./yt_profile.jpg" alt="YT - CEO/Producer">
+      <div class="about-logo-overlay">
+        <div class="logo-circle" style="width:68px;height:68px;flex-shrink:0;">
+          <img src="./yt_logo.jpg" alt="YT" onerror="this.style.display='none'">
+        </div>
+        <div>
+          <div class="ceo-tag">CEO / Producer</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.2em;color:var(--gold);">YT CREATIVE LAB</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat-box"><div class="about-stat-num">20+</div><div class="about-stat-label" data-en="Years in LA" data-ko="LA 경력" data-es="Años en LA">Years in LA</div></div>
+      <div class="about-stat-box"><div class="about-stat-num">∞</div><div class="about-stat-label" data-en="Passion" data-ko="열정" data-es="Pasión">Passion</div></div>
+      <div class="about-stat-box"><div class="about-stat-num">3</div><div class="about-stat-label" data-en="Core Pillars" data-ko="핵심 기둥" data-es="Pilares Clave">Core Pillars</div></div>
+      <div class="about-stat-box"><div class="about-stat-num">1</div><div class="about-stat-label" data-en="Standard: Elite" data-ko="기준: 최고" data-es="Estándar: Elite">Standard: Elite</div></div>
+    </div>
+    <div class="about-corner"></div>
+  </div>
+  <div class="about-text reveal">
+    <div class="section-eyebrow" data-en="Our Story" data-ko="우리 이야기" data-es="Nuestra Historia">Our Story</div>
+    <h2 class="section-title" data-en="HUMAN.<br><span style='color:var(--gold)'>HUNGRY.<br>HERE.</span>" data-ko="인간적.<br><span style='color:var(--gold)'>열정적.<br>여기에.</span>" data-es="HUMANO.<br><span style='color:var(--gold)'>APASIONADO.<br>AQUÍ.</span>">HUMAN.<br><span style="color:var(--gold)">HUNGRY.<br>HERE.</span></h2>
+
+    <div class="about-lang-tabs">
+      <button class="lang-tab active" onclick="switchAboutLang('en')">EN</button>
+      <button class="lang-tab" onclick="switchAboutLang('ko')">한국어</button>
+      <button class="lang-tab" onclick="switchAboutLang('es')">ESP</button>
+    </div>
+
+    <div class="about-copy active" id="about-en">
+      <p>YT Creative Lab is a full-service rehearsal, recording, and mastering facility in the heart of greater Los Angeles. Our group of highly experienced engineers specialize in making the final creative adjustments to optimize recordings for maximum effectiveness — for commercial release, promotional or demo use.</p>
+      <p>Whether it's your first album or your follow-up to a #1 hit, <strong style="color:var(--white);font-weight:400">we take care of you the same.</strong> The CEO/Producer, YT, has been consistently producing and serving the greater LA area for more than 20 years.</p>
+      <div class="about-quote">"We have a full technical staff to ensure all projects advance smoothly — without any technical delays."</div>
+      <p>We are also proudly the home of Dolby Atmos mixing and mastering. And every single day, we are out here sweating for local artists — developing real talent, building real futures.</p>
+    </div>
+
+    <div class="about-copy" id="about-ko">
+      <p>YT Creative Lab은 로스앤젤레스에 위치한 풀서비스 리허설, 레코딩, 마스터링 시설입니다. 풍부한 경험을 가진 엔지니어들이 최대 효과를 위한 창의적 조정을 전문으로 합니다.</p>
+      <p>첫 앨범이든 빌보드 1위 후속작이든, <strong style="color:var(--white);font-weight:400">언제나 동일한 최고의 서비스를 제공합니다.</strong> CEO/프로듀서 YT는 20년 이상 LA 지역에서 활동해왔습니다.</p>
+      <div class="about-quote">"모든 프로젝트가 기술적 지연 없이 원활하게 진행될 수 있도록 전문 기술 스태프가 항상 함께합니다."</div>
+      <p>Dolby Atmos 믹싱 및 마스터링을 자랑스럽게 제공하며, 매일 로컬 아티스트들의 성장을 위해 땀 흘리는 인간다운 기업입니다.</p>
+    </div>
+
+    <div class="about-copy" id="about-es">
+      <p>YT Creative Lab es un estudio completo de ensayo, grabación y masterización en el corazón del área metropolitana de Los Ángeles. Nuestros ingenieros especializados optimizan cada grabación para el máximo impacto.</p>
+      <p>Ya sea tu primer álbum o el seguimiento de un éxito número 1, <strong style="color:var(--white);font-weight:400">te tratamos igual de bien.</strong> El CEO/Productor YT lleva más de 20 años sirviendo al área de LA.</p>
+      <div class="about-quote">"Tenemos un equipo técnico completo para asegurar que todos los proyectos avancen sin demoras."</div>
+      <p>También ofrecemos mezcla y masterización en Dolby Atmos. Y cada día sudamos por los artistas locales — desarrollando talento real, construyendo futuros reales.</p>
+    </div>
+
+    <a href="#contact" class="btn-primary" style="display:inline-block;margin-top:30px;"><span data-en="Start Your Project" data-ko="프로젝트 시작하기" data-es="Iniciar Tu Proyecto">Start Your Project</span></a>
+  </div>
+</section>
+
+<!-- LIVE STUDIO -->
+<section class="live-studio" id="live">
+  <div class="live-studio-inner">
+    <div class="reveal">
+      <div style="position:relative;">
+        <div class="live-video-frame">
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            <span class="live-badge-text" data-en="Live Capable" data-ko="라이브 가능" data-es="Capacidad en Vivo">Live Capable</span>
+          </div>
+          <div class="video-shell">
+            <iframe
+              id="livePlayer"
+              src="https://www.youtube.com/embed/YN_7s0AfSgQ?start=2513&autoplay=1&mute=1&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1"
+              allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <!-- Live section mute button -->
+          <button class="live-mute-btn" id="liveMuteBtn" onclick="toggleLiveMute()">
+            <span id="liveMuteIcon">🔇</span>
+            <span id="liveMuteLabel">Unmute</span>
+          </button>
+        </div>
+      </div>
+      <div class="live-features">
+        <div class="live-feat"><div class="live-feat-icon">📡</div><div class="live-feat-text"><strong data-en="YouTube Live Ready" data-ko="유튜브 라이브 지원" data-es="Listo para YouTube Live">YouTube Live Ready</strong><span data-en="Stream your session live to the world directly from our studio" data-ko="스튜디오에서 전 세계로 직접 라이브 스트리밍" data-es="Transmite tu sesión en vivo al mundo desde nuestro estudio">Stream your session live to the world directly from our studio</span></div></div>
+        <div class="live-feat"><div class="live-feat-icon">🎥</div><div class="live-feat-text"><strong data-en="Multi-Camera System" data-ko="멀티캠 시스템" data-es="Sistema Multicámara">Multi-Camera System</strong><span data-en="Professional multi-cam setup for cinematic live capture" data-ko="시네마틱 라이브 촬영을 위한 전문 멀티캠 셋업" data-es="Configuración multicámara profesional para captura cinematográfica en vivo">Professional multi-cam setup for cinematic live capture</span></div></div>
+        <div class="live-feat"><div class="live-feat-icon">🎚️</div><div class="live-feat-text"><strong data-en="Logic Pro Integration" data-ko="로직 프로 연동" data-es="Integración Logic Pro">Logic Pro Integration</strong><span data-en="Full DAW integration ensures broadcast-quality audio on every stream" data-ko="풀 DAW 연동으로 모든 스트리밍에서 방송급 오디오 품질 보장" data-es="Integración completa de DAW garantiza audio de calidad broadcast">Full DAW integration ensures broadcast-quality audio on every stream</span></div></div>
+      </div>
+    </div>
+    <div class="live-text reveal">
+      <div class="section-eyebrow" data-en="Live Streaming Studio" data-ko="라이브 스트리밍 스튜디오" data-es="Estudio de Transmisión en Vivo">Live Streaming Studio</div>
+      <h2 class="section-title" data-en="PERFORM.<br><span style='color:var(--gold)'>STREAM.<br>DOMINATE.</span>" data-ko="퍼포먼스.<br><span style='color:var(--gold)'>스트리밍.<br>장악.</span>" data-es="ACTÚA.<br><span style='color:var(--gold)'>TRANSMITE.<br>DOMINA.</span>">PERFORM.<br><span style="color:var(--gold)">STREAM.<br>DOMINATE.</span></h2>
+      <p class="live-desc" data-en="YT Creative Lab isn't just a recording studio — it's a full live broadcast facility. Bring your audience into the room. Our multi-camera system connected to Logic Pro and Pro Tools delivers the highest quality audio-visual experience for YouTube Live, content creation, and beyond." data-ko="YT Creative Lab은 단순한 레코딩 스튜디오가 아닙니다 — 완전한 라이브 방송 시설입니다. 멀티캠 시스템과 로직 프로/프로 툴즈 연동으로 최상의 유튜브 라이브 퀄리티를 제공합니다." data-es="YT Creative Lab no es solo un estudio de grabación — es una instalación completa de transmisión en vivo. Nuestro sistema multicámara conectado a Logic Pro y Pro Tools ofrece la mejor experiencia audiovisual.">YT Creative Lab isn't just a recording studio — it's a full live broadcast facility. Bring your audience into the room. Our multi-camera system connected to Logic Pro and Pro Tools delivers the highest quality audio-visual experience for YouTube Live, content creation, and beyond.</p>
+      <div class="spec-grid">
+        <div class="spec-box"><div class="spec-label" data-en="Video" data-ko="비디오" data-es="Video">Video</div><div class="spec-value">4K MULTI-CAM</div></div>
+        <div class="spec-box"><div class="spec-label" data-en="Audio DAW" data-ko="오디오 DAW" data-es="DAW de Audio">Audio DAW</div><div class="spec-value">LOGIC PRO / PRO TOOLS</div></div>
+        <div class="spec-box"><div class="spec-label" data-en="Platform" data-ko="플랫폼" data-es="Plataforma">Platform</div><div class="spec-value">YOUTUBE LIVE</div></div>
+        <div class="spec-box"><div class="spec-label" data-en="Format" data-ko="포맷" data-es="Formato">Format</div><div class="spec-value">1080 × 1920</div></div>
+      </div>
+      <a href="#contact" class="btn-primary" style="display:inline-block;margin-top:36px;"><span data-en="Book a Live Session" data-ko="라이브 세션 예약" data-es="Reservar Sesión en Vivo">Book a Live Session</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- DOLBY ATMOS BANNER -->
+<div class="atmos-banner reveal">
+  <div class="atmos-left">
+    <div class="atmos-eyebrow" data-en="Immersive Audio" data-ko="이머시브 오디오" data-es="Audio Inmersivo">Immersive Audio</div>
+    <h3 class="atmos-title" data-en="DOLBY <span style='color:var(--gold)'>ATMOS</span><br>MIXING &amp; MASTERING" data-ko="돌비 <span style='color:var(--gold)'>애트모스</span><br>믹싱 &amp; 마스터링" data-es="MEZCLA Y MASTERIZACIÓN<br><span style='color:var(--gold)'>DOLBY ATMOS</span>">DOLBY <span style="color:var(--gold)">ATMOS</span><br>MIXING &amp; MASTERING</h3>
+    <p class="atmos-desc" data-en="We are proudly one of LA's certified Dolby Atmos studios. Experience spatial audio the way it was meant to be heard — full 360° immersive sound for streaming platforms, theatrical release, and beyond." data-ko="LA의 공인 돌비 애트모스 스튜디오 중 하나입니다. 스트리밍 플랫폼, 극장 개봉 등을 위한 360° 이머시브 사운드를 경험하세요." data-es="Somos uno de los estudios certificados de Dolby Atmos en LA. Experimenta el audio espacial como fue concebido — sonido inmersivo 360° para plataformas de streaming y lanzamiento teatral.">We are proudly one of LA's certified Dolby Atmos studios. Experience spatial audio the way it was meant to be heard — full 360° immersive sound for streaming platforms, theatrical release, and beyond.</p>
+    <div class="atmos-badges">
+      <span class="atmos-badge">Apple Music Spatial</span>
+      <span class="atmos-badge">Amazon Music HD</span>
+      <span class="atmos-badge">TIDAL Masters</span>
+      <span class="atmos-badge">Theatrical</span>
+    </div>
+  </div>
+  <a href="#contact" class="btn-primary"><span data-en="Inquire About Atmos" data-ko="애트모스 문의" data-es="Consultar Sobre Atmos">Inquire About Atmos</span></a>
+</div>
+
+<!-- SERVICES -->
+<section class="services-strip" id="services">
+  <div class="reveal">
+    <div class="section-eyebrow" data-en="What We Offer" data-ko="제공 서비스" data-es="Lo Que Ofrecemos">What We Offer</div>
+    <h2 class="section-title" data-en="FULL SERVICE" data-ko="풀 서비스" data-es="SERVICIO COMPLETO">FULL SERVICE</h2>
+    <p class="section-sub" data-en="Everything under one roof, one standard: elite." data-ko="모든 것이 한 지붕 아래, 하나의 기준: 최고." data-es="Todo bajo un mismo techo, un mismo estándar: élite.">Everything under one roof, one standard: elite.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="svc-card">
+      <div class="svc-num">01</div>
+      <div class="svc-icon">🎙️</div>
+      <div class="svc-name" data-en="RECORDING" data-ko="레코딩" data-es="GRABACIÓN">RECORDING</div>
+      <div class="svc-desc" data-en="State-of-the-art recording environment. Singles, EPs, full albums — from your first track to your next chart hit." data-ko="최첨단 레코딩 환경. 싱글, EP, 정규 앨범 — 첫 트랙부터 차트 히트까지." data-es="Entorno de grabación de última generación. Singles, EPs, álbumes completos.">State-of-the-art recording environment. Singles, EPs, full albums — from your first track to your next chart hit.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">02</div>
+      <div class="svc-icon">🎸</div>
+      <div class="svc-name" data-en="REHEARSAL" data-ko="리허설" data-es="ENSAYO">REHEARSAL</div>
+      <div class="svc-desc" data-en="Full rehearsal facility for live performance prep. Industry equipment, spacious rooms, real-show conditions." data-ko="라이브 공연 준비를 위한 완벽한 리허설 시설. 실전과 같은 환경을 제공합니다." data-es="Sala de ensayo completa para preparación de actuaciones en vivo.">Full rehearsal facility for live performance prep. Industry equipment, spacious rooms, real-show conditions.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">03</div>
+      <div class="svc-icon">🎚️</div>
+      <div class="svc-name" data-en="MIX / MASTER" data-ko="믹스 / 마스터" data-es="MEZCLA / MASTER">MIX / MASTER</div>
+      <div class="svc-desc" data-en="Precision mixing and mastering for commercial, promo, or demo use. Stereo and Dolby Atmos options available." data-ko="상업용, 홍보용, 데모용 정밀 믹싱 및 마스터링. 스테레오 및 돌비 애트모스 옵션 제공." data-es="Mezcla y masterización de precisión. Opciones en estéreo y Dolby Atmos disponibles.">Precision mixing and mastering for commercial, promo, or demo use. Stereo and Dolby Atmos options available.</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">04</div>
+      <div class="svc-icon">🎓</div>
+      <div class="svc-name" data-en="EDUCATION" data-ko="교육" data-es="EDUCACIÓN">EDUCATION</div>
+      <div class="svc-desc" data-en="Private lessons, group workshops, and full artist development programs. We don't just teach — we invest." data-ko="개인 레슨, 그룹 워크샵, 완전한 아티스트 개발 프로그램. 우리는 단순히 가르치지 않습니다 — 투자합니다." data-es="Lecciones privadas, talleres grupales y programas de desarrollo artístico.">Private lessons, group workshops, and full artist development programs. We don't just teach — we invest.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="reveal">
+    <div class="section-eyebrow" data-en="The Space" data-ko="우리 공간" data-es="El Espacio">The Space</div>
+    <h2 class="section-title" data-en="THE STUDIO" data-ko="스튜디오" data-es="EL ESTUDIO">THE STUDIO</h2>
+    <p class="section-sub" data-en="Where inspiration meets infrastructure." data-ko="영감이 인프라를 만나는 곳." data-es="Donde la inspiración se encuentra con la infraestructura.">Where inspiration meets infrastructure.</p>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item"><div class="gallery-ph"><div class="gallery-ph-icon">🎚️</div><div data-en="Add your photo here" data-ko="사진을 추가하세요" data-es="Agrega tu foto aquí">Add your photo here</div><div style="font-size:.52rem;opacity:.4">MAIN STUDIO</div></div><div class="gallery-ol"><div class="gallery-ol-label">MAIN CONTROL ROOM</div></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><div class="gallery-ph-icon">🎙️</div><div style="font-size:.58rem" data-en="Recording Booth" data-ko="레코딩 부스" data-es="Cabina de Grabación">Recording Booth</div></div><div class="gallery-ol"><div class="gallery-ol-label">RECORDING BOOTH</div></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><div class="gallery-ph-icon">🥁</div><div style="font-size:.58rem" data-en="Rehearsal Room" data-ko="리허설 룸" data-es="Sala de Ensayo">Rehearsal Room</div></div><div class="gallery-ol"><div class="gallery-ol-label">REHEARSAL ROOM</div></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><div class="gallery-ph-icon">📡</div><div style="font-size:.58rem" data-en="Live Stream Setup" data-ko="라이브 스트림 셋업" data-es="Configuración en Vivo">Live Stream Setup</div></div><div class="gallery-ol"><div class="gallery-ol-label">LIVE STREAM ROOM</div></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><div class="gallery-ph-icon">🎤</div><div style="font-size:.58rem" data-en="Vocal Booth" data-ko="보컬 부스" data-es="Cabina Vocal">Vocal Booth</div></div><div class="gallery-ol"><div class="gallery-ol-label">VOCAL BOOTH</div></div></div>
+  </div>
+</section>
+
+
+<!-- STREAMING PLATFORMS -->
+<section class="platforms reveal">
+  <div class="platforms-eyebrow">Available On</div>
+  <h2 class="platforms-title" data-en="STREAM EVERYWHERE" data-ko="모든 플랫폼에서" data-es="EN TODAS LAS PLATAFORMAS">STREAM EVERYWHERE</h2>
+  <p class="platforms-sub" data-en="YT Creative Lab artists distributed worldwide" data-ko="YT Creative Lab 아티스트, 전 세계 배포" data-es="Artistas de YT Creative Lab distribuidos mundialmente">YT Creative Lab artists distributed worldwide</p>
+
+  <div class="platforms-track">
+    <!-- Row 1 - Global platforms -->
+    <div class="platforms-row">
+      <span class="platform-pill pp-spotify"><span class="dot"></span>Spotify</span>
+      <span class="platform-pill pp-apple"><span class="dot"></span>Apple Music</span>
+      <span class="platform-pill pp-youtube"><span class="dot"></span>YouTube Music</span>
+      <span class="platform-pill pp-amazon"><span class="dot"></span>Amazon Music</span>
+      <span class="platform-pill pp-tidal"><span class="dot"></span>TIDAL</span>
+      <span class="platform-pill pp-pandora"><span class="dot"></span>Pandora</span>
+      <span class="platform-pill pp-deezer"><span class="dot"></span>Deezer</span>
+      <span class="platform-pill pp-iheart"><span class="dot"></span>iHeartRadio</span>
+      <span class="platform-pill pp-tiktok"><span class="dot"></span>TikTok Music</span>
+      <span class="platform-pill pp-soundcloud"><span class="dot"></span>SoundCloud</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="platform-pill pp-spotify"><span class="dot"></span>Spotify</span>
+      <span class="platform-pill pp-apple"><span class="dot"></span>Apple Music</span>
+      <span class="platform-pill pp-youtube"><span class="dot"></span>YouTube Music</span>
+      <span class="platform-pill pp-amazon"><span class="dot"></span>Amazon Music</span>
+      <span class="platform-pill pp-tidal"><span class="dot"></span>TIDAL</span>
+      <span class="platform-pill pp-pandora"><span class="dot"></span>Pandora</span>
+      <span class="platform-pill pp-deezer"><span class="dot"></span>Deezer</span>
+      <span class="platform-pill pp-iheart"><span class="dot"></span>iHeartRadio</span>
+      <span class="platform-pill pp-tiktok"><span class="dot"></span>TikTok Music</span>
+      <span class="platform-pill pp-soundcloud"><span class="dot"></span>SoundCloud</span>
+    </div>
+    <!-- Row 2 - Korean platforms + mix (reverse scroll) -->
+    <div class="platforms-row reverse">
+      <span class="platform-pill pp-melon"><span class="dot"></span>Melon</span>
+      <span class="platform-pill pp-vibe"><span class="dot"></span>VIBE</span>
+      <span class="platform-pill pp-bugs"><span class="dot"></span>Bugs!</span>
+      <span class="platform-pill pp-genie"><span class="dot"></span>Genie</span>
+      <span class="platform-pill pp-flo"><span class="dot"></span>FLO</span>
+      <span class="platform-pill pp-spotify"><span class="dot"></span>Spotify</span>
+      <span class="platform-pill pp-apple"><span class="dot"></span>Apple Music</span>
+      <span class="platform-pill pp-tidal"><span class="dot"></span>TIDAL</span>
+      <span class="platform-pill pp-amazon"><span class="dot"></span>Amazon Music</span>
+      <span class="platform-pill pp-youtube"><span class="dot"></span>YouTube Music</span>
+      <!-- Duplicate -->
+      <span class="platform-pill pp-melon"><span class="dot"></span>Melon</span>
+      <span class="platform-pill pp-vibe"><span class="dot"></span>VIBE</span>
+      <span class="platform-pill pp-bugs"><span class="dot"></span>Bugs!</span>
+      <span class="platform-pill pp-genie"><span class="dot"></span>Genie</span>
+      <span class="platform-pill pp-flo"><span class="dot"></span>FLO</span>
+      <span class="platform-pill pp-spotify"><span class="dot"></span>Spotify</span>
+      <span class="platform-pill pp-apple"><span class="dot"></span>Apple Music</span>
+      <span class="platform-pill pp-tidal"><span class="dot"></span>TIDAL</span>
+      <span class="platform-pill pp-amazon"><span class="dot"></span>Amazon Music</span>
+      <span class="platform-pill pp-youtube"><span class="dot"></span>YouTube Music</span>
+    </div>
+  </div>
+</section>
+
+<!-- GOODS -->
+<section class="goods" id="goods">
+  <div class="reveal">
+    <div class="section-eyebrow" data-en="Coming Soon" data-ko="곧 출시" data-es="Próximamente">Coming Soon</div>
+    <h2 class="section-title" data-en="YT GOODS" data-ko="YT 굿즈" data-es="YT TIENDA">YT GOODS</h2>
+    <p class="section-sub" data-en="Wear the spirit. Rep the culture." data-ko="스피릿을 입으세요. 문화를 대표하세요." data-es="Viste el espíritu. Representa la cultura.">Wear the spirit. Rep the culture.</p>
+  </div>
+  <div class="goods-grid reveal">
+    <div class="good-item featured"><div class="good-icon">👕</div><div class="good-name">HOODIE</div><div class="good-soon">SOON</div></div>
+    <div class="good-item"><div class="good-icon">🧢</div><div class="good-name">CAP</div><div class="good-soon">SOON</div></div>
+    <div class="good-item"><div class="good-icon">👟</div><div class="good-name">COLLAB DROP</div><div class="good-soon">SOON</div></div>
+    <div class="good-item"><div class="good-icon">💿</div><div class="good-name">VINYL / MERCH</div><div class="good-soon">SOON</div></div>
+  </div>
+  <p style="margin-top:36px;font-size:.7rem;letter-spacing:.15em;color:rgba(245,240,232,.28);text-transform:uppercase;" class="reveal">
+    <span data-en="Pre-register for early access →" data-ko="사전 신청으로 조기 접근 →" data-es="Regístrate anticipadamente →">Pre-register for early access →</span>
+    <a href="#contact" style="color:var(--gold);text-decoration:none;margin-left:8px;" data-en="Contact Us" data-ko="문의하기" data-es="Contáctanos">Contact Us</a>
+  </p>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="reveal">
+    <div class="section-eyebrow" data-en="Get In Touch" data-ko="연락하기" data-es="Contáctanos">Get In Touch</div>
+    <h2 class="section-title" data-en="LET'S<br><span style='color:var(--gold)'>CREATE.</span>" data-ko="함께<br><span style='color:var(--gold)'>만들어봐요.</span>" data-es="VAMOS A<br><span style='color:var(--gold)'>CREAR.</span>">LET'S<br><span style="color:var(--gold)">CREATE.</span></h2>
+    <p style="font-size:.8rem;line-height:1.9;color:rgba(245,240,232,.4);margin-bottom:44px;" data-en="Studio bookings, mixing &amp; mastering, lessons, live stream sessions, or just saying hello — we're here." data-ko="스튜디오 예약, 믹싱 &amp; 마스터링, 레슨, 라이브 스트리밍 세션 — 무엇이든 연락주세요." data-es="Reservas de estudio, mezcla y masterización, lecciones, sesiones en vivo — estamos aquí.">Studio bookings, mixing &amp; mastering, lessons, live stream sessions, or just saying hello — we're here.</p>
+    <div class="contact-info-item"><div class="ci-label" data-en="Website" data-ko="웹사이트" data-es="Sitio Web">Website</div><div class="ci-value"><a href="https://ytrules.com">ytrules.com</a></div></div>
+    <div class="contact-info-item"><div class="ci-label" data-en="Location" data-ko="위치" data-es="Ubicación">Location</div><div class="ci-value">Greater Los Angeles, CA</div></div>
+    <div class="contact-info-item"><div class="ci-label" data-en="Instagram" data-ko="인스타그램" data-es="Instagram">Instagram</div><div class="ci-value"><a href="https://www.instagram.com/ytcreativelab" target="_blank" style="color:var(--white);text-decoration:none;">@ytcreativelab</a></div></div><div class="contact-info-item"><div class="ci-label" data-en="YouTube" data-ko="유튜브" data-es="YouTube">YouTube</div><div class="ci-value"><a href="https://www.youtube.com/@ytcreativelab" target="_blank" style="color:var(--white);text-decoration:none;">@ytcreativelab</a></div></div>
+    <div class="contact-info-item"><div class="ci-label" data-en="Hours" data-ko="운영시간" data-es="Horario">Hours</div><div class="ci-value">Mon–Sat · 10AM–10PM</div></div>
+  </div>
+  <div class="contact-form reveal">
+    <div class="form-group"><label class="form-label" data-en="Name" data-ko="이름" data-es="Nombre">Name</label><input type="text" class="form-input" placeholder="Your name"></div>
+    <div class="form-group"><label class="form-label" data-en="Contact" data-ko="연락처" data-es="Contacto">Contact</label><input type="text" class="form-input" placeholder="Email or phone"></div>
+    <div class="form-group"><label class="form-label" data-en="Inquiry Type" data-ko="문의 유형" data-es="Tipo de Consulta">Inquiry Type</label><input type="text" class="form-input" data-placeholder-en="Recording / Rehearsal / Mixing / Education / Live / Goods" data-placeholder-ko="레코딩 / 리허설 / 믹싱 / 교육 / 라이브 / 굿즈" data-placeholder-es="Grabación / Ensayo / Mezcla / Educación / Vivo / Tienda" placeholder="Recording / Rehearsal / Mixing / Education / Live / Goods"></div>
+    <div class="form-group"><label class="form-label" data-en="Message" data-ko="메시지" data-es="Mensaje">Message</label><textarea class="form-input" placeholder="Tell us about your project..."></textarea></div>
+    <button class="form-submit" data-en="Send Message" data-ko="메시지 보내기" data-es="Enviar Mensaje">Send Message</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:12px;"><a href="#" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><div class="logo-circle" style="width:34px;height:34px;flex-shrink:0;"><img src="./yt_logo.jpg" alt="YT" onerror="this.style.display='none'"></div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.2em;color:var(--gold);">YT <span style='color:rgba(245,240,232,.4);'>CREATIVE LAB</span></span></a></div>
+  <div class="footer-copy">© 2025 YT Creative Lab · Los Angeles, CA · ytrules.com</div>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/ytcreativelab" target="_blank">Instagram</a>
+    <a href="https://www.youtube.com/@ytcreativelab" target="_blank">YouTube</a>
+    <a href="https://distrokid.com/hyperfollow/yt42/dont-be-afraid" target="_blank">Music</a>
+    <a href="https://ytrules.com" target="_blank">ytrules.com</a>
+  </div>
+</footer>
+
+<script>
+// ── Custom cursor ──
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2)';ring.style.width='58px';ring.style.height='58px';ring.style.opacity='.25';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='.6';});
+});
+
+// ── Nav scroll ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>80);
+  document.getElementById('langBar').style.display=window.scrollY>80?'none':'flex';
+});
+
+// ── Mute Toggle ──
+let isMuted=true;
+function toggleMute(){
+  const iframe=document.getElementById('ytPlayer');
+  const btn=document.getElementById('muteBtn');
+  const icon=document.getElementById('muteIcon');
+  const label=document.getElementById('muteLabel');
+  if(isMuted){
+    iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'unMute',args:[]}),'*');
+    icon.textContent='🔊';
+    label.textContent=currentLang==='ko'?'소리 끄기':currentLang==='es'?'Silenciar':'Mute';
+    btn.classList.add('unmuted');isMuted=false;
+  }else{
+    iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'mute',args:[]}),'*');
+    icon.textContent='🔇';
+    label.textContent=currentLang==='ko'?'소리 켜기':currentLang==='es'?'Activar sonido':'Unmute';
+    btn.classList.remove('unmuted');isMuted=true;
+  }
+}
+
+// ── Language System ──
+let currentLang='en';
+function setLang(lang){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['en','ko','es'][i]===lang);
+  });
+  document.querySelectorAll('[data-'+lang+']').forEach(el=>{
+    el.innerHTML=el.getAttribute('data-'+lang);
+  });
+  document.querySelectorAll('[data-placeholder-'+lang+']').forEach(el=>{
+    el.placeholder=el.getAttribute('data-placeholder-'+lang);
+  });
+  if(!isMuted){
+    document.getElementById('muteLabel').textContent=lang==='ko'?'소리 끄기':lang==='es'?'Silenciar':'Mute';
+  }else{
+    document.getElementById('muteLabel').textContent=lang==='ko'?'소리 켜기':lang==='es'?'Activar sonido':'Unmute';
+  }
+}
+
+// ── About Lang Tabs ──
+function switchAboutLang(lang){
+  document.querySelectorAll('.about-copy').forEach(c=>c.classList.remove('active'));
+  document.getElementById('about-'+lang).classList.add('active');
+  document.querySelectorAll('.lang-tab').forEach((t,i)=>{
+    t.classList.toggle('active',['en','ko','es'][i]===lang);
+  });
+}
+
+// ── Scroll Reveal ──
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*70);obs.unobserve(e.target);}
+  });
+},{threshold:.08});
+reveals.forEach(r=>obs.observe(r));
+
+// ── Live Section Mute Toggle ──
+let isLiveMuted = true;
+function toggleLiveMute(){
+  const iframe = document.getElementById('livePlayer');
+  const btn = document.getElementById('liveMuteBtn');
+  const icon = document.getElementById('liveMuteIcon');
+  const label = document.getElementById('liveMuteLabel');
+  if(isLiveMuted){
+    iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'unMute',args:[]}),'*');
+    icon.textContent = '🔊';
+    label.textContent = currentLang==='ko'?'소리 끄기':currentLang==='es'?'Silenciar':'Mute';
+    btn.classList.add('unmuted'); isLiveMuted = false;
+  } else {
+    iframe.contentWindow.postMessage(JSON.stringify({event:'command',func:'mute',args:[]}),'*');
+    icon.textContent = '🔇';
+    label.textContent = currentLang==='ko'?'소리 켜기':currentLang==='es'?'Activar':'Unmute';
+    btn.classList.remove('unmuted'); isLiveMuted = true;
+  }
+}
+
+// Image load check
+window.addEventListener('load', function(){
+  document.querySelectorAll('img').forEach(function(img){
+    if(!img.complete || img.naturalWidth === 0){
+      console.log('Failed to load:', img.src);
+    }
+  });
+});
+</script>
+</body>
+</html>
