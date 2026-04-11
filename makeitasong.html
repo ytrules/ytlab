@@ -437,7 +437,7 @@ canvas.waveform{width:100%;height:100%;display:block;}
 <script>
 // ── Config ──
 const SERVER = 'https://spiffy-justly-footpath.ngrok-free.dev';
-const STRIPE_PK = 'pk_live_51TKs0eQR9kp5fMbbwxAOWBZoA6vNsEjTJa8HmYT0hFb0uM3HKyN0faqRcvswIPgAk3gkQmF4KbEkpM42GYet1yju00HFebnAoN'; // ← 여기 바꿔야함
+const STRIPE_PK = 'pk_test_51TKs0q3c9E1pbt3PYourPublishableKeyHere'; // ← 여기 바꿔야함
 const stripe = Stripe(STRIPE_PK);
 let cardElement, clientSecret, uploadedFileId, selPlan, ytbucksApplied = false;
 
@@ -559,7 +559,7 @@ async function uploadToServer(file){
   const formData = new FormData();
   formData.append('audio', file);
   try {
-    const res = await fetch(`${SERVER}/api/upload`, { method:'POST', body:formData });
+    const res = await fetch(`${SERVER}/api/upload`, { method:'POST', body:formData, headers:{'ngrok-skip-browser-warning':'1'} });
     const data = await res.json();
     if(data.valid){
       const m=Math.floor(data.duration/60), s=String(data.duration%60).padStart(2,'0');
@@ -602,7 +602,7 @@ async function redeemYTBucks(){
   try {
     const res = await fetch(`${SERVER}/api/validate-ytbucks`, {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},
       body: JSON.stringify({code})
     });
     const data = await res.json();
@@ -657,7 +657,7 @@ async function submitOrder(){
     try {
       const res = await fetch(`${SERVER}/api/create-payment`, {
         method:'POST',
-        headers:{'Content-Type':'application/json'},
+        headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},
         body: JSON.stringify({plan:selPlan, email, fileId:uploadedFileId, ytbucksCode:ytbucksApplied})
       });
       const data = await res.json();
@@ -692,7 +692,7 @@ function openModal(){
   // Get payment intent
   fetch(`${SERVER}/api/create-payment`, {
     method:'POST',
-    headers:{'Content-Type':'application/json'},
+    headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},
     body: JSON.stringify({plan:selPlan, email:document.getElementById('emailInput').value.trim(), fileId:uploadedFileId})
   }).then(r=>r.json()).then(d=>{ clientSecret=d.clientSecret; });
 }
