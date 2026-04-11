@@ -9,13 +9,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bebas+Neue&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 <script src="https://js.stripe.com/v3/"></script>
 <style>
-:root{--black:#050505;--gold:#C9A84C;--gold-light:#E8CC7A;--white:#F5F0E8;--gray:#141414;--gray2:#1e1e1e;--polish:#4a9eff;--magic:#f9c74f;}
+:root{--black:#050505;--gold:#C9A84C;--gold-light:#E8CC7A;--white:#F5F0E8;--gray:#141414;--gray2:#1e1e1e;--polish:#4a9eff;--magic:#f9c74f;--starter:#7ed4a7;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
-.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
-.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;transition:width .3s,height .3s,opacity .3s;}
+.cursor-spark{position:fixed;pointer-events:none;z-index:9999;width:0;height:0;}
+.spark-particle{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;transform:translate(-50%,-50%);}
 a,button,label{cursor:none;}
+.preview-player{margin-top:16px;background:rgba(126,212,167,.08);border:1px solid rgba(126,212,167,.2);padding:14px 16px;display:none;}
+.preview-player.show{display:block;}
+.preview-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--starter);margin-bottom:10px;}
+.preview-controls{display:flex;align-items:center;gap:10px;}
+.preview-play{width:32px;height:32px;border-radius:50%;background:var(--starter);border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.preview-play svg{width:12px;height:12px;fill:#000;margin-left:2px;}
+.preview-prog{flex:1;height:2px;background:rgba(255,255,255,.08);cursor:pointer;}
+.preview-fill{height:100%;width:0%;background:var(--starter);}
+.preview-time{font-size:.58rem;color:rgba(245,240,232,.35);width:32px;text-align:right;}
+.preview-wm{font-size:.6rem;color:rgba(126,212,167,.5);margin-top:8px;letter-spacing:.1em;}
+body{cursor:none;}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:rgba(5,5,5,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);}
 .nav-back{display:flex;align-items:center;gap:10px;text-decoration:none;color:rgba(245,240,232,.5);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;transition:color .3s;}
@@ -96,13 +107,15 @@ canvas.waveform{width:100%;height:100%;display:block;}
 .player-card.magic .prog-fill{background:var(--magic);}
 
 .plans{padding:100px 60px;background:var(--black);}
-.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;max-width:860px;margin:56px auto 0;}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:1100px;margin:56px auto 0;}
 .plan-card{background:var(--gray2);padding:44px 38px;position:relative;}
 .plan-card.magic-plan{background:linear-gradient(135deg,#0e0c07 0%,#181408 100%);border:1px solid rgba(201,168,76,.2);}
 .plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.plan-card.starter-plan::before{background:var(--starter);}
 .plan-card.polish-plan::before{background:var(--polish);}
 .plan-card.magic-plan::before{background:var(--magic);}
 .plan-tier{font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:10px;}
+.plan-card.starter-plan .plan-tier{color:var(--starter);}
 .plan-card.polish-plan .plan-tier{color:var(--polish);}
 .plan-card.magic-plan .plan-tier{color:var(--magic);}
 .plan-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.05em;margin-bottom:6px;}
@@ -112,6 +125,7 @@ canvas.waveform{width:100%;height:100%;display:block;}
 .plan-features li{font-size:.76rem;color:rgba(245,240,232,.55);display:flex;gap:8px;line-height:1.5;}
 .plan-features li::before{content:'—';color:var(--gold);flex-shrink:0;}
 .plan-btn{display:block;width:100%;text-align:center;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;padding:13px;border:none;font-family:'Inter',sans-serif;transition:opacity .3s;}
+.plan-card.starter-plan .plan-btn{background:var(--starter);color:#000;}
 .plan-card.polish-plan .plan-btn{background:var(--polish);color:#000;}
 .plan-card.magic-plan .plan-btn{background:var(--gold);color:#000;}
 .plan-btn:hover{opacity:.85;}
@@ -209,14 +223,14 @@ canvas.waveform{width:100%;height:100%;display:block;}
   nav{padding:16px 20px;}
   .demo,.plans,.upload-section,.how{padding:70px 20px;}
   .players-grid,.plans-grid{grid-template-columns:1fr;}
+  .plan-btns{flex-direction:column !important;}
   .steps{grid-template-columns:1fr 1fr;}
   .hero{padding:100px 20px 60px;}
 }
 </style>
 </head>
 <body>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="sparkCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
 
 <nav>
   <a href="https://ytrules.com" class="nav-back">
@@ -306,38 +320,52 @@ canvas.waveform{width:100%;height:100%;display:block;}
 <section class="plans">
   <div class="reveal">
     <div class="section-eyebrow">Choose Your Level</div>
-    <h2 class="section-title">TWO TIERS. ONE STANDARD.</h2>
+    <h2 class="section-title">THREE TIERS. ONE STANDARD.</h2>
     <p class="section-sub">Designed for simple setups — voice, acoustic guitar, solo piano. Not for full band recordings.</p>
   </div>
   <div class="plans-grid reveal">
-    <div class="plan-card polish-plan">
-      <div class="plan-tier">Entry Level</div>
-      <div class="plan-name">YT POLISH</div>
+    <div class="plan-card starter-plan">
+      <div class="plan-tier">Starter</div>
+      <div class="plan-name">YT STARTER</div>
       <div class="plan-price">$9.99</div>
       <div class="plan-note">Up to 5 min · WAV or MP3 · Instant Delivery</div>
       <ul class="plan-features">
+        <li>Hear your first 30 seconds before you pay</li>
         <li>Noise reduction & cleanup</li>
         <li>EQ — clarity and warmth</li>
-        <li>Light compression for consistency</li>
-        <li>Volume leveling & loudness optimization</li>
-        <li>Stereo enhancement</li>
-        <li>Delivered as high-quality WAV</li>
+        <li>Compression & volume leveling</li>
+        <li>Fully automated · Instant delivery</li>
+      </ul>
+      <button class="plan-btn" onclick="selectAndScroll('starter')">Get YT Starter →</button>
+    </div>
+    <div class="plan-card polish-plan">
+      <div class="plan-tier">Polish</div>
+      <div class="plan-name">YT POLISH</div>
+      <div class="plan-price">$19.99</div>
+      <div class="plan-note">Up to 5 min · WAV or MP3 · Delivered in 8hrs</div>
+      <ul class="plan-features">
+        <li>Everything in YT Starter</li>
+        <li>Advanced EQ & harmonic shaping</li>
+        <li>Professional compression chain</li>
+        <li>Stereo width enhancement</li>
+        <li>Mastered to streaming standards</li>
+        <li>Handled by YT personally</li>
       </ul>
       <button class="plan-btn" onclick="selectAndScroll('polish')">Get YT Polish →</button>
     </div>
     <div class="plan-card magic-plan">
       <div class="plan-tier">Advanced</div>
       <div class="plan-name">YT MAGIC</div>
-      <div class="plan-price">$19.99</div>
-      <div class="plan-note">Up to 5 min · WAV or MP3 · Instant Delivery</div>
+      <div class="plan-price">$29.99</div>
+      <div class="plan-note">Up to 5 min · WAV or MP3 · Delivered in 8hrs</div>
       <ul class="plan-features">
         <li>Everything in YT Polish</li>
-        <li>Advanced harmonic enhancement</li>
-        <li>Spatial depth & dimension</li>
-        <li>Saturation & analog warmth</li>
+        <li>YT's signature plugin chain</li>
+        <li>Spatial depth & analog warmth</li>
+        <li>Saturation & harmonic enhancement</li>
         <li>Professional dynamic shaping</li>
         <li>Mastered to streaming standards</li>
-        <li>YT's signature plugin chain</li>
+        <li>YT's best work · Handled personally</li>
       </ul>
       <button class="plan-btn" onclick="selectAndScroll('magic')">Get YT Magic →</button>
     </div>
@@ -384,9 +412,24 @@ canvas.waveform{width:100%;height:100%;display:block;}
 
     <div class="plan-pick" id="planPick">
       <div class="plan-pick-label">Choose Your Service</div>
-      <div class="plan-btns">
-        <button class="plan-pick-btn" id="polishBtn" onclick="selectPlan('polish')">YT Polish — $9.99</button>
-        <button class="plan-pick-btn" id="magicBtn" onclick="selectPlan('magic')">YT Magic — $19.99</button>
+      <div class="plan-btns" style="flex-direction:column;gap:6px;">
+        <div style="display:flex;gap:6px;">
+          <button class="plan-pick-btn" id="starterBtn" onclick="selectPlan('starter')" style="border-color:rgba(126,212,167,.3);color:rgba(126,212,167,.7);">YT Starter — $9.99 · Instant</button>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="plan-pick-btn" id="polishBtn" onclick="selectPlan('polish')">YT Polish — $19.99 · 8hrs</button>
+          <button class="plan-pick-btn" id="magicBtn" onclick="selectPlan('magic')">YT Magic — $29.99 · 8hrs</button>
+        </div>
+      </div>
+      <div class="preview-player" id="previewPlayer">
+        <div class="preview-label">30 Second Preview — YT Starter</div>
+        <div class="preview-controls">
+          <button class="preview-play" onclick="togglePreview()"><svg id="preview-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <div class="preview-prog" onclick="seekPreview(event)"><div class="preview-fill" id="preview-fill"></div></div>
+          <span class="preview-time" id="preview-time">0:00</span>
+        </div>
+        <div class="preview-wm">Preview · YT Creative Lab watermark included</div>
+        <audio id="audio-preview" preload="none"></audio>
       </div>
       <div class="email-wrap" id="emailWrap">
         <input type="email" class="email-input" id="emailInput" placeholder="Your email — we'll send the download link here">
@@ -404,8 +447,8 @@ canvas.waveform{width:100%;height:100%;display:block;}
   <div class="steps reveal">
     <div class="step"><div class="step-num">01</div><div class="step-title">Upload</div><div class="step-desc">Drop your WAV or MP3. We instantly check your file meets the guidelines.</div></div>
     <div class="step"><div class="step-num">02</div><div class="step-title">We Check</div><div class="step-desc">Automatic validation ensures your recording is eligible for our service.</div></div>
-    <div class="step"><div class="step-num">03</div><div class="step-title">Choose & Pay</div><div class="step-desc">Pick YT Polish ($9.99) or YT Magic ($19.99). Secure checkout via Stripe.</div></div>
-    <div class="step"><div class="step-num">04</div><div class="step-title">Instant Download</div><div class="step-desc">Your processed file is delivered to your email automatically. No waiting.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-title">Preview or Pay</div><div class="step-desc">YT Starter: hear your 30-sec preview first. Polish & Magic: pay and YT handles it personally.</div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-title">Get Your File</div><div class="step-desc">Starter: instant delivery. Polish & Magic: in your inbox within 8 hours.</div></div>
   </div>
 </section>
 
@@ -435,18 +478,81 @@ canvas.waveform{width:100%;height:100%;display:block;}
 </div>
 
 <script>
+// ── Spark Cursor ──
+const canvas = document.getElementById('sparkCanvas');
+const ctx2 = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+const particles = [];
+let mouseX = 0, mouseY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  for(let i = 0; i < 5; i++) {
+    particles.push({
+      x: mouseX,
+      y: mouseY,
+      vx: (Math.random() - 0.5) * 5,
+      vy: (Math.random() - 0.5) * 5 - 2,
+      life: 1,
+      size: Math.random() * 8 + 4,
+      color: Math.random() > 0.5 ? '#C9A84C' : '#E8CC7A'
+    });
+  }
+});
+
+function animateSparks() {
+  ctx2.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw cursor dot
+  ctx2.beginPath();
+  ctx2.arc(mouseX, mouseY, 7, 0, Math.PI * 2);
+  ctx2.fillStyle = '#C9A84C';
+  ctx2.fill();
+  
+  // Draw particles
+  for(let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.08;
+    p.life -= 0.022;
+    p.size *= 0.975;
+    
+    if(p.life <= 0) { particles.splice(i, 1); continue; }
+    
+    ctx2.save();
+    ctx2.globalAlpha = p.life;
+    ctx2.beginPath();
+    // Star shape
+    const spikes = 4;
+    const outerR = p.size;
+    const innerR = p.size * 0.4;
+    for(let s = 0; s < spikes * 2; s++) {
+      const r = s % 2 === 0 ? outerR : innerR;
+      const angle = (s * Math.PI) / spikes - Math.PI / 2;
+      if(s === 0) ctx2.moveTo(p.x + r * Math.cos(angle), p.y + r * Math.sin(angle));
+      else ctx2.lineTo(p.x + r * Math.cos(angle), p.y + r * Math.sin(angle));
+    }
+    ctx2.closePath();
+    ctx2.fillStyle = p.color;
+    ctx2.fill();
+    ctx2.restore();
+  }
+  requestAnimationFrame(animateSparks);
+}
+animateSparks();
+
 // ── Config ──
 const SERVER = 'https://spiffy-justly-footpath.ngrok-free.dev';
 const STRIPE_PK = 'pk_test_51TKs0q3c9E1pbt3PYourPublishableKeyHere'; // ← 여기 바꿔야함
 const stripe = Stripe(STRIPE_PK);
 let cardElement, clientSecret, uploadedFileId, selPlan, ytbucksApplied = false;
 
-// ── Cursor ──
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+
 
 // ── Waveforms ──
 const WF = {
@@ -626,16 +732,63 @@ async function redeemYTBucks(){
 // ── Plan Selection ──
 function selectPlan(plan){
   selPlan=plan;
+  document.getElementById('starterBtn').style.borderColor = plan==='starter' ? 'var(--starter)' : 'rgba(126,212,167,.3)';
+  document.getElementById('starterBtn').style.color = plan==='starter' ? 'var(--starter)' : 'rgba(126,212,167,.7)';
   document.getElementById('polishBtn').className='plan-pick-btn'+(plan==='polish'?' p-active':'');
   document.getElementById('magicBtn').className='plan-pick-btn'+(plan==='magic'?' m-active':'');
-  document.getElementById('emailWrap').classList.add('show');
   const btn=document.getElementById('submitBtn');
-  if(ytbucksApplied){
-    btn.textContent = plan==='polish' ? 'Submit for YT Polish — FREE (YT Bucks) →' : 'Submit for YT Magic — FREE (YT Bucks) →';
+  
+  if(plan==='starter'){
+    // Starter: 먼저 30초 미리듣기 생성
+    document.getElementById('previewPlayer').classList.remove('show');
+    btn.textContent='Generate 30-Second Preview →';
+    btn.classList.add('show');
+    document.getElementById('emailWrap').classList.remove('show');
   } else {
-    btn.textContent = plan==='polish' ? 'Submit for YT Polish — $9.99 →' : 'Submit for YT Magic — $19.99 →';
+    document.getElementById('previewPlayer').classList.remove('show');
+    document.getElementById('emailWrap').classList.add('show');
+    const prices = {polish:'$19.99', magic:'$29.99'};
+    const names = {polish:'YT Polish', magic:'YT Magic'};
+    if(ytbucksApplied){
+      btn.textContent = `Submit for ${names[plan]} — FREE (YT Bucks) →`;
+    } else {
+      btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
+    }
+    btn.classList.add('show');
   }
-  btn.classList.add('show');
+}
+
+// Preview player
+let previewAudio = document.getElementById('audio-preview');
+let previewPlaying = false;
+
+previewAudio.addEventListener('timeupdate', () => {
+  const p = (previewAudio.currentTime / previewAudio.duration) * 100;
+  document.getElementById('preview-fill').style.width = p + '%';
+  const m = Math.floor(previewAudio.currentTime/60);
+  const s = String(Math.floor(previewAudio.currentTime%60)).padStart(2,'0');
+  document.getElementById('preview-time').textContent = m+':'+s;
+});
+previewAudio.addEventListener('ended', () => {
+  previewPlaying = false;
+  document.getElementById('preview-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
+});
+
+function togglePreview(){
+  if(previewAudio.paused){
+    previewAudio.play();
+    previewPlaying = true;
+    document.getElementById('preview-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+  } else {
+    previewAudio.pause();
+    previewPlaying = false;
+    document.getElementById('preview-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
+  }
+}
+
+function seekPreview(e){
+  const r = e.currentTarget.getBoundingClientRect();
+  previewAudio.currentTime = ((e.clientX - r.left) / r.width) * previewAudio.duration;
 }
 
 function selectAndScroll(plan){
@@ -646,6 +799,33 @@ function selectAndScroll(plan){
 // ── Submit Order ──
 async function submitOrder(){
   if(!fileOk||!selPlan) return;
+
+  // Starter: 30초 미리듣기 먼저
+  if(selPlan === 'starter' && !document.getElementById('previewPlayer').classList.contains('show')){
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Generating preview...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(`${SERVER}/api/preview`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},
+        body: JSON.stringify({fileId: uploadedFileId})
+      });
+      const data = await res.json();
+      if(data.previewUrl){
+        previewAudio.src = data.previewUrl;
+        document.getElementById('previewPlayer').classList.add('show');
+        document.getElementById('emailWrap').classList.add('show');
+        btn.textContent = 'Submit for YT Starter — $9.99 →';
+        btn.disabled = false;
+      }
+    } catch(e){
+      btn.textContent = 'Generate 30-Second Preview →';
+      btn.disabled = false;
+    }
+    return;
+  }
+
   const email = document.getElementById('emailInput').value.trim();
   if(!email || !email.includes('@')){
     document.getElementById('emailInput').style.borderColor='rgba(220,50,50,.5)';
@@ -676,7 +856,8 @@ async function submitOrder(){
 function openModal(){
   const modal = document.getElementById('payModal');
   document.getElementById('modalTitle').textContent = selPlan==='polish' ? 'YT POLISH' : 'YT MAGIC';
-  document.getElementById('modalSub').textContent = selPlan==='polish' ? '$9.99 · Instant Delivery' : '$19.99 · Instant Delivery';
+  const modalPrices = {starter:'$9.99 · Instant Delivery', polish:'$19.99 · Delivered in 8hrs', magic:'$29.99 · Delivered in 8hrs'};
+  document.getElementById('modalSub').textContent = modalPrices[selPlan] || '$9.99';
   modal.classList.add('show');
 
   // Init Stripe Elements
