@@ -352,7 +352,7 @@ canvas.waveform{width:100%;height:100%;display:block;}
       <div class="plan-tier">Starter</div>
       <div class="plan-name">YT STARTER</div>
       <div class="plan-price">$9.99</div>
-      <div class="plan-note">Up to 5 min · WAV or MP3 · Instant Delivery</div>
+      <div class="plan-note">Up to 5 min · WAV / MP3 / M4A · Instant Delivery</div>
       <ul class="plan-features">
         <li>Hear your first 30 seconds before you pay</li>
         <li>Noise reduction & cleanup</li>
@@ -366,7 +366,7 @@ canvas.waveform{width:100%;height:100%;display:block;}
       <div class="plan-tier">Polish</div>
       <div class="plan-name">YT POLISH</div>
       <div class="plan-price">$19.99</div>
-      <div class="plan-note">Up to 5 min · WAV or MP3 · Delivered in 8hrs</div>
+      <div class="plan-note">Up to 5 min · WAV / MP3 / M4A · Delivered in 8hrs</div>
       <ul class="plan-features">
         <li>Everything in YT Starter</li>
         <li>Advanced EQ & harmonic shaping</li>
@@ -381,7 +381,7 @@ canvas.waveform{width:100%;height:100%;display:block;}
       <div class="plan-tier">Advanced</div>
       <div class="plan-name">YT MAGIC</div>
       <div class="plan-price">$29.99</div>
-      <div class="plan-note">Up to 5 min · WAV or MP3 · Delivered in 8hrs</div>
+      <div class="plan-note">Up to 5 min · WAV / MP3 / M4A · Delivered in 8hrs</div>
       <ul class="plan-features">
         <li>Everything in YT Polish</li>
         <li>YT's full signature plugin chain</li>
@@ -405,7 +405,7 @@ canvas.waveform{width:100%;height:100%;display:block;}
   <div class="upload-box reveal" id="dropZone">
     <div class="upload-icon">🎙️</div>
     <div class="upload-title">Drop Your File Here</div>
-    <div class="upload-sub">WAV or MP3 · Up to 5 minutes<br>Simple setup — voice, acoustic, solo instrument only</div>
+    <div class="upload-sub">WAV, MP3 or M4A · Up to 5 minutes<br>Simple setup — voice, acoustic, solo instrument only</div>
     <div class="upload-rules">
       <h4>File Guidelines</h4>
       <ul>
@@ -413,10 +413,10 @@ canvas.waveform{width:100%;height:100%;display:block;}
         <li>No heavily produced or already mixed files</li>
         <li>No full band or multi-track recordings</li>
         <li>Maximum 5 minutes duration</li>
-        <li>WAV or MP3 format only</li>
+        <li>WAV, MP3 or M4A format only</li>
       </ul>
     </div>
-    <input type="file" id="fileInput" class="file-input" accept=".wav,.mp3" onchange="handleFile(this.files[0])">
+    <input type="file" id="fileInput" class="file-input" accept=".wav,.mp3,.m4a" onchange="handleFile(this.files[0])">
     <label for="fileInput" class="upload-btn" id="chooseBtn">Choose File</label>
 
     <div class="v-result" id="vResult">
@@ -607,7 +607,7 @@ let fileOk=false, uploadedFile=null;
 function handleFile(file){
   if(!file)return;
   const ext=file.name.split('.').pop().toLowerCase();
-  if(!['wav','mp3'].includes(ext)){showV('fail','Unsupported Format','Please upload a WAV or MP3 file.');return;}
+  if(!['wav','mp3','m4a'].includes(ext)){showV('fail','Unsupported Format','Please upload a WAV or MP3 file.');return;}
 
   showV('ok','Checking file...','Please wait.');
 
