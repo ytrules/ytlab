@@ -13,7 +13,8 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
-.cursor-spark{position:fixed;pointer-events:none;z-index:9999;width:0;height:0;}
+.cursor{position:fixed;width:12px;height:12px;background:rgba(180,160,255,.95);border:2px solid rgba(140,120,255,.6);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);top:0;left:0;}
+.cursor-ring{position:fixed;width:38px;height:38px;border:1.5px solid rgba(180,160,255,.55);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);opacity:.7;transition:width .25s,height .25s;top:0;left:0;}
 .spark-particle{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;transform:translate(-50%,-50%);}
 a,button,label{cursor:none;}
 .preview-player{margin-top:16px;background:rgba(126,212,167,.08);border:1px solid rgba(126,212,167,.2);padding:14px 16px;display:none;}
@@ -26,7 +27,6 @@ a,button,label{cursor:none;}
 .preview-fill{height:100%;width:0%;background:var(--starter);}
 .preview-time{font-size:.58rem;color:rgba(245,240,232,.35);width:32px;text-align:right;}
 .preview-wm{font-size:.6rem;color:rgba(126,212,167,.5);margin-top:8px;letter-spacing:.1em;}
-body{cursor:none;}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:rgba(5,5,5,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);}
 .nav-back{display:flex;align-items:center;gap:10px;text-decoration:none;color:rgba(245,240,232,.5);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;transition:color .3s;}
@@ -78,6 +78,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .player-card{background:var(--gray2);padding:30px 26px;position:relative;}
 .player-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
 .player-card.iphone::before{background:rgba(255,255,255,.15);}
+.player-card.starter::before{background:#7ed4a7;}
 .player-card.polish::before{background:var(--polish);}
 .player-card.magic::before{background:var(--magic);}
 .player-label{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:5px;}
