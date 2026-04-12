@@ -144,6 +144,14 @@ canvas.waveform{width:100%;height:100%;display:block;}
 .upload-rules li::before{content:'·';color:var(--gold);}
 .file-input{display:none;}
 .upload-btn{display:inline-block;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;background:var(--gold);color:var(--black);padding:13px 34px;border:none;font-family:'Inter',sans-serif;}
+.remove-file-btn{display:none;margin-top:10px;background:none;border:1px solid rgba(220,50,50,.3);color:rgba(220,50,50,.7);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;padding:7px 16px;font-family:'Inter',sans-serif;transition:all .3s;}
+.remove-file-btn.show{display:inline-block;}
+.remove-file-btn:hover{border-color:rgba(220,50,50,.7);color:#e05555;}
+.file-replace{display:none;margin-top:12px;align-items:center;justify-content:space-between;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);padding:10px 14px;}
+.file-replace.show{display:flex;}
+.file-name{font-size:.72rem;color:rgba(245,240,232,.6);letter-spacing:.05em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70%;}
+.file-remove{background:none;border:none;color:rgba(245,240,232,.35);font-size:1rem;padding:0 4px;transition:color .3s;line-height:1;}
+.file-remove:hover{color:#e05555;}
 .v-result{margin-top:20px;padding:14px 18px;display:none;}
 .v-result.show{display:block;}
 .v-result.ok{background:rgba(40,180,80,.07);border:1px solid rgba(40,180,80,.25);}
@@ -410,7 +418,12 @@ canvas.waveform{width:100%;height:100%;display:block;}
       </ul>
     </div>
     <input type="file" id="fileInput" class="file-input" accept=".wav,.mp3" onchange="handleFile(this.files[0])">
-    <label for="fileInput" class="upload-btn">Choose File</label>
+    <label for="fileInput" class="upload-btn" id="chooseBtn">Choose File</label>
+    <button class="remove-file-btn" id="removeFileBtn" onclick="removeFile()">✕ Remove & Choose Another</button>
+    <div class="file-replace" id="fileReplace">
+      <span class="file-name" id="fileName">—</span>
+      <button class="file-remove" onclick="removeFile()" title="Remove file">✕</button>
+    </div>
 
     <div class="v-result" id="vResult">
       <div class="v-title" id="vTitle"></div>
@@ -626,7 +639,10 @@ async function uploadToServer(file){
     const data = await res.json();
     if(data.valid){
       const m=Math.floor(data.duration/60), s=String(data.duration%60).padStart(2,'0');
-      showV('ok','✓ File Accepted',`"${file.name}" — ${m}:${s} · Ready for processing.`);
+      showV('ok','✓ File Accepted',`${file.name}   ${m}:${s}`);
+      document.getElementById('fileName').textContent = `${file.name} — ${m}:${s}`;
+      document.getElementById('fileReplace').classList.add('show');
+      document.getElementById('chooseBtn').style.display = 'none';
       uploadedFileId = data.fileId;
       uploadedFile = file;
       fileOk = true;
@@ -640,19 +656,58 @@ async function uploadToServer(file){
   }
 }
 
+function removeFile(){
+  fileOk = false;
+  uploadedFileId = null;
+  uploadedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('fileReplace').classList.remove('show');
+  document.getElementById('chooseBtn').style.display = 'inline-block';
+  document.getElementById('vResult').className = 'v-result';
+  document.getElementById('planPick').classList.remove('show');
+  document.getElementById('ytbucksWrap').classList.remove('show');
+  document.getElementById('submitBtn').classList.remove('show');
+  document.getElementById('emailWrap').classList.remove('show');
+  document.getElementById('previewPlayer').classList.remove('show');
+  selPlan = null;
+}
+
 function showV(type,title,msg){
   const el=document.getElementById('vResult');
   el.className='v-result show '+type;
   document.getElementById('vTitle').textContent=title;
   document.getElementById('vMsg').textContent=msg;
-  if(type!=='ok'){
+  if(type==='ok'){
+    document.getElementById('removeFileBtn').classList.add('show');
+    document.getElementById('chooseBtn').style.display='none';
+  } else {
     fileOk=false;
     document.getElementById('planPick').classList.remove('show');
     document.getElementById('ytbucksWrap').classList.remove('show');
     document.getElementById('submitBtn').classList.remove('show');
     document.getElementById('emailWrap').classList.remove('show');
+    document.getElementById('removeFileBtn').classList.remove('show');
+    document.getElementById('chooseBtn').style.display='inline-block';
     selPlan=null;
   }
+}
+
+function removeFile(){
+  fileOk = false;
+  uploadedFileId = null;
+  selPlan = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('vResult').className = 'v-result';
+  document.getElementById('planPick').classList.remove('show');
+  document.getElementById('ytbucksWrap').classList.remove('show');
+  document.getElementById('submitBtn').classList.remove('show');
+  document.getElementById('emailWrap').classList.remove('show');
+  document.getElementById('previewPlayer').classList.remove('show');
+  document.getElementById('removeFileBtn').classList.remove('show');
+  document.getElementById('chooseBtn').style.display='inline-block';
+  document.getElementById('ytbucksInput').value='';
+  document.getElementById('ytbucksStatus').textContent='';
+  ytbucksApplied=false;
 }
 
 // ── YT Bucks ──
