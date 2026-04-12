@@ -630,7 +630,7 @@ async function uploadToServer(file){
   const formData = new FormData();
   formData.append('audio', file);
   try {
-    const res = await fetch(`${SERVER}/api/upload`, { method:'POST', body:formData, headers:{'ngrok-skip-browser-warning':'1'} });
+    const res = await fetch(`${SERVER}/api/upload`, { method:'POST', body:formData, headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'} });
     const data = await res.json();
     if(data.valid){
       const m=Math.floor(data.duration/60), s=String(data.duration%60).padStart(2,'0');
