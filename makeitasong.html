@@ -705,11 +705,13 @@ async function redeemYTBucks(){
     });
     const data = await res.json();
     if(data.valid){
-      statusEl.textContent = `✓ ${data.msg} — ${data.plan === 'any' ? 'Both plans' : 'YT ' + data.plan.charAt(0).toUpperCase() + data.plan.slice(1)} unlocked free`;
+      const planName = data.plan === 'any' ? 'All plans' : 'YT ' + data.plan.charAt(0).toUpperCase() + data.plan.slice(1);
+      statusEl.textContent = `✓ ${data.msg} — ${planName} unlocked free`;
       statusEl.className = 'ytbucks-status ok';
       ytbucksApplied = code;
-      // Auto-select plan if specified
+      // Auto-select plan if specified, or refresh current selection
       if(data.plan !== 'any') selectPlan(data.plan);
+      else if(selPlan) selectPlan(selPlan);
     } else {
       statusEl.textContent = `✗ ${data.msg}`;
       statusEl.className = 'ytbucks-status fail';
@@ -731,11 +733,15 @@ function selectPlan(plan){
   const btn=document.getElementById('submitBtn');
   
   if(plan==='starter'){
-    // Starter: 먼저 30초 미리듣기 생성
     document.getElementById('previewPlayer').classList.remove('show');
-    btn.textContent='Generate 30-Second Preview →';
-    btn.classList.add('show');
     document.getElementById('emailWrap').classList.remove('show');
+    if(ytbucksApplied){
+      btn.textContent='Submit for YT Starter — FREE (YT Bucks) →';
+      document.getElementById('emailWrap').classList.add('show');
+    } else {
+      btn.textContent='Generate 30-Second Preview →';
+    }
+    btn.classList.add('show');
   } else {
     document.getElementById('previewPlayer').classList.remove('show');
     document.getElementById('emailWrap').classList.add('show');
