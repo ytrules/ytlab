@@ -635,9 +635,6 @@ async function uploadToServer(file){
     if(data.valid){
       const m=Math.floor(data.duration/60), s=String(data.duration%60).padStart(2,'0');
       showV('ok','✓ File Accepted',`${file.name}   ${m}:${s}`);
-      document.getElementById('fileName').textContent = `${file.name} — ${m}:${s}`;
-      document.getElementById('fileReplace').classList.add('show');
-      document.getElementById('chooseBtn').style.display = 'none';
       uploadedFileId = data.fileId;
       uploadedFile = file;
       fileOk = true;
