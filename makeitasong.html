@@ -427,10 +427,11 @@ canvas.waveform{width:100%;height:100%;display:block;}
 
     <!-- YT Bucks -->
     <div class="ytbucks-wrap" id="ytbucksWrap">
-      <div class="ytbucks-label">Have a YT Bucks code?</div>
+      <div class="ytbucks-label">Have a YT Starter code?</div>
       <div class="ytbucks-row">
-        <input type="text" class="ytbucks-input" id="ytbucksInput" placeholder="ENTER CODE" maxlength="20">
+        <input type="text" class="ytbucks-input" id="ytbucksInput" placeholder="ENTER CODE" maxlength="20" oninput="if(!this.value)clearYTBucks()">
         <button class="ytbucks-btn" onclick="redeemYTBucks()">Redeem</button>
+        <button class="ytbucks-btn" onclick="clearYTBucks()" id="ytbucksClear" style="display:none;background:none;border:1px solid rgba(220,50,50,.3);color:rgba(220,50,50,.6);">✕</button>
       </div>
       <div class="ytbucks-status" id="ytbucksStatus"></div>
     </div>
@@ -705,13 +706,18 @@ async function redeemYTBucks(){
     });
     const data = await res.json();
     if(data.valid){
-      const planName = data.plan === 'any' ? 'All plans' : 'YT ' + data.plan.charAt(0).toUpperCase() + data.plan.slice(1);
-      statusEl.textContent = `✓ ${data.msg} — ${planName} unlocked free`;
+      // Starter 전용 — polish/magic 불가
+      if(data.plan !== 'starter' && data.plan !== 'any'){
+        statusEl.textContent = '✗ This code is not valid for YT Starter';
+        statusEl.className = 'ytbucks-status fail';
+        ytbucksApplied = false;
+        return;
+      }
+      statusEl.textContent = `✓ YT Starter unlocked — free`;
       statusEl.className = 'ytbucks-status ok';
       ytbucksApplied = code;
-      // Auto-select plan if specified, or refresh current selection
-      if(data.plan !== 'any') selectPlan(data.plan);
-      else if(selPlan) selectPlan(selPlan);
+      document.getElementById('ytbucksClear').style.display = 'inline-block';
+      selectPlan('starter');
     } else {
       statusEl.textContent = `✗ ${data.msg}`;
       statusEl.className = 'ytbucks-status fail';
@@ -721,6 +727,15 @@ async function redeemYTBucks(){
     statusEl.textContent = 'Could not verify code. Try again.';
     statusEl.className = 'ytbucks-status fail';
   }
+}
+
+function clearYTBucks(){
+  ytbucksApplied = false;
+  document.getElementById('ytbucksInput').value = '';
+  document.getElementById('ytbucksStatus').textContent = '';
+  document.getElementById('ytbucksStatus').className = 'ytbucks-status';
+  document.getElementById('ytbucksClear').style.display = 'none';
+  if(selPlan) selectPlan(selPlan);
 }
 
 // ── Plan Selection ──
