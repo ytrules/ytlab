@@ -751,7 +751,7 @@ function selectPlan(plan){
     document.getElementById('previewPlayer').classList.remove('show');
     document.getElementById('emailWrap').classList.remove('show');
     if(ytbucksApplied){
-      btn.textContent='Submit for YT Starter — FREE (YT Bucks) →';
+      btn.textContent='Submit for YT Starter — $9.99 →';
       document.getElementById('emailWrap').classList.add('show');
     } else {
       btn.textContent='Generate 30-Second Preview →';
@@ -763,7 +763,7 @@ function selectPlan(plan){
     const prices = {polish:'$19.99', magic:'$29.99'};
     const names = {polish:'YT Polish', magic:'YT Magic'};
     if(ytbucksApplied){
-      btn.textContent = `Submit for ${names[plan]} — FREE (YT Bucks) →`;
+      btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
     } else {
       btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
     }
