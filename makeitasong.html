@@ -503,7 +503,7 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.le
 (function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
 
 // ── Config ──
-const SERVER = 'https://spiffy-justly-footpath.ngrok-free.dev';
+const SERVER = 'https://ytlab.ngrok.app';
 const STRIPE_PK = 'pk_test_51TKs0q3c9E1pbt3PYourPublishableKeyHere'; // ← 여기 바꿔야함
 const stripe = Stripe(STRIPE_PK);
 let cardElement, clientSecret, uploadedFileId, selPlan, ytbucksApplied = false;
