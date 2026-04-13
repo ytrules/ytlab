@@ -932,17 +932,17 @@ function showSuccess(){
   document.getElementById('processingMsg').classList.remove('show');
   document.getElementById('successMsg').classList.add('show');
   if(selPlan==='starter'){
-    document.getElementById('successIcon').textContent='🎶';
+    document.getElementById('successIcon').textContent='\uD83C\uDFB6';
     document.getElementById('successTitle').textContent="IT'S READY.";
     document.getElementById('successSub').innerHTML='Your processed file is on its way.<br>Check your email for the download link.';
   } else if(selPlan==='polish'){
-    document.getElementById('successIcon').textContent='🎵';
+    document.getElementById('successIcon').textContent='\uD83C\uDFB5';
     document.getElementById('successTitle').textContent='ORDER RECEIVED.';
-    document.getElementById('successSub').innerHTML='YT will handle your recording personally.<br>Expect your file within <strong style="color:var(--gold)">8 hours</strong>.<br><br>Check your email for confirmation.';
+    document.getElementById('successSub').innerHTML='YT will handle your recording personally.<br>Expect your file within <b style="color:#C9A84C">8 hours</b>.<br><br>Check your email for confirmation.';
   } else if(selPlan==='magic'){
-    document.getElementById('successIcon').textContent='✨';
+    document.getElementById('successIcon').textContent='\u2728';
     document.getElementById('successTitle').textContent='THE MAGIC BEGINS.';
-    document.getElementById('successSub').innerHTML="YT's full signal chain is coming your way.<br>Expect your file within <strong style="color:var(--gold)">8 hours</strong>.<br><br>Check your email for confirmation.";
+    document.getElementById('successSub').innerHTML='YT full signal chain is coming your way.<br>Expect your file within <b style="color:#C9A84C">8 hours</b>.<br><br>Check your email for confirmation.';
   }
 }
 
