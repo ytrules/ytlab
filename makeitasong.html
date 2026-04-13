@@ -45,31 +45,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .nav-title{font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.2em;color:var(--gold);}
 
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 40px 80px;position:relative;overflow:hidden;}
-.hero-video-wrap{position:absolute;inset:0;z-index:0;overflow:hidden;}
-.hero-video-wrap video{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  min-width:100%;
-  min-height:100%;
-  width:auto;
-  height:auto;
-  object-fit:cover;
-  object-position:center center;
-}
-.hero-video-wrap::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    to bottom,
-    rgba(5,5,5,.65) 0%,
-    rgba(5,5,5,.45) 40%,
-    rgba(5,5,5,.55) 70%,
-    rgba(5,5,5,.85) 100%
-  );
-}
-.hero > *:not(.hero-video-wrap){position:relative;z-index:1;}
+
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(201,168,76,.06) 0%,transparent 70%);}
 .hero-eyebrow{font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:.85;}
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,9vw,8rem);letter-spacing:.04em;line-height:.88;margin-bottom:24px;}
@@ -267,12 +243,7 @@ canvas.waveform{width:100%;height:100%;display:block;}
 </nav>
 
 <section class="hero">
-  <div class="hero-video-wrap">
-    <video autoplay muted loop playsinline preload="auto">
-      <source src="./ytcreativelab_bg.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="hero-eyebrow">YT Creative Lab · Los Angeles</div>
+<div class="hero-eyebrow">YT Creative Lab · Los Angeles</div>
   <h1 class="hero-title">MAKE IT SOUND<span>LIKE A SONG.</span></h1>
   <p class="hero-sub" data-en="You caught the moment. Now let's make it sound like one. YT's enchanted signal chain takes your raw iPhone take and turns it into something you'd actually play for someone — your first real step toward a pro sound. It is not finished. But you'll love it. And you'll want more." data-ko="그 순간을 담았군요. 이제 진짜 노래처럼 들리게 해봐요. YT의 마법 같은 시그널 체인이 당신의 아이폰 녹음을 — 실제로 누군가에게 들려주고 싶은 무언가로 바꿔드립니다. 아직 완성은 아니에요. 하지만 분명 마음에 들 거예요. 그리고 더 원하게 될 거예요." data-es="Capturaste el momento. Ahora hagámoslo sonar como uno. El signal chain encantado de YT toma tu grabación de iPhone y la convierte en algo que querrías mostrarle a alguien — tu primer paso real hacia un sonido profesional. No está terminado. Pero te va a gustar. Y vas a querer más.">You caught the moment. Now let's make it sound like one. YT's enchanted signal chain takes your raw iPhone take and turns it into something you'd actually play for someone — your first real step toward a pro sound. It is not finished. But you'll love it. And you'll want more.</p>
   <div class="hero-badges">
