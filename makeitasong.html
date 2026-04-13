@@ -188,9 +188,11 @@ canvas.waveform{width:100%;height:100%;display:block;}
 .plan-pick.show{display:block;}
 .plan-pick-label{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
 .plan-btns{display:flex;gap:6px;}
-.plan-pick-btn{flex:1;padding:11px;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;border:1px solid rgba(255,255,255,.08);background:none;color:rgba(245,240,232,.5);font-family:'Inter',sans-serif;transition:all .3s;}
-.plan-pick-btn.p-active{border-color:var(--polish);color:var(--polish);background:rgba(74,158,255,.07);}
-.plan-pick-btn.m-active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.07);}
+.plan-pick-btn{flex:1;padding:11px;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(245,240,232,.35);font-family:'Inter',sans-serif;transition:all .3s;}
+.plan-pick-btn:hover{color:rgba(245,240,232,.6);border-color:rgba(255,255,255,.2);}
+.plan-pick-btn.s-active{border-color:var(--starter);color:var(--starter);background:rgba(126,212,167,.12);}
+.plan-pick-btn.p-active{border-color:var(--polish);color:var(--polish);background:rgba(74,158,255,.12);}
+.plan-pick-btn.m-active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.12);}
 
 /* Email input */
 .email-wrap{margin-top:12px;display:none;}
@@ -649,7 +651,6 @@ async function uploadToServer(file){
       uploadedFileId = data.fileId;
       uploadedFile = file;
       fileOk = true;
-      document.getElementById('ytbucksWrap').classList.add('show');
       document.getElementById('planPick').classList.add('show');
     } else {
       showV('fail','File Not Eligible', data.error || 'This file does not meet our guidelines.');
@@ -751,8 +752,7 @@ function clearYTBucks(){
 // ── Plan Selection ──
 function selectPlan(plan){
   selPlan=plan;
-  document.getElementById('starterBtn').style.borderColor = plan==='starter' ? 'var(--starter)' : 'rgba(126,212,167,.3)';
-  document.getElementById('starterBtn').style.color = plan==='starter' ? 'var(--starter)' : 'rgba(126,212,167,.7)';
+  document.getElementById('starterBtn').className='plan-pick-btn'+(plan==='starter'?' s-active':'');
   document.getElementById('polishBtn').className='plan-pick-btn'+(plan==='polish'?' p-active':'');
   document.getElementById('magicBtn').className='plan-pick-btn'+(plan==='magic'?' m-active':'');
   const btn=document.getElementById('submitBtn');
@@ -760,6 +760,7 @@ function selectPlan(plan){
   if(plan==='starter'){
     document.getElementById('previewPlayer').classList.remove('show');
     document.getElementById('emailWrap').classList.remove('show');
+    document.getElementById('ytbucksWrap').classList.add('show');
     if(ytbucksApplied){
       btn.textContent='Submit for YT Starter — $9.99 →';
       document.getElementById('emailWrap').classList.add('show');
@@ -771,6 +772,10 @@ function selectPlan(plan){
     document.getElementById('previewPlayer').classList.remove('show');
     document.getElementById('emailWrap').classList.add('show');
     document.getElementById('ytbucksWrap').classList.remove('show');
+    ytbucksApplied = false;
+    document.getElementById('ytbucksInput').value='';
+    document.getElementById('ytbucksStatus').textContent='';
+    document.getElementById('ytbucksClear').style.display='none';
     const prices = {polish:'$19.99', magic:'$29.99'};
     const names = {polish:'YT Polish', magic:'YT Magic'};
     btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
