@@ -651,6 +651,7 @@ async function uploadToServer(file){
       uploadedFileId = data.fileId;
       uploadedFile = file;
       fileOk = true;
+      document.getElementById('ytbucksWrap').classList.add('show');
       document.getElementById('planPick').classList.add('show');
     } else {
       showV('fail','File Not Eligible', data.error || 'This file does not meet our guidelines.');
@@ -771,11 +772,6 @@ function selectPlan(plan){
   } else {
     document.getElementById('previewPlayer').classList.remove('show');
     document.getElementById('emailWrap').classList.add('show');
-    document.getElementById('ytbucksWrap').classList.remove('show');
-    ytbucksApplied = false;
-    document.getElementById('ytbucksInput').value='';
-    document.getElementById('ytbucksStatus').textContent='';
-    document.getElementById('ytbucksClear').style.display='none';
     const prices = {polish:'$19.99', magic:'$29.99'};
     const names = {polish:'YT Polish', magic:'YT Magic'};
     btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
