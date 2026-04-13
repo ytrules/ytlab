@@ -770,13 +770,10 @@ function selectPlan(plan){
   } else {
     document.getElementById('previewPlayer').classList.remove('show');
     document.getElementById('emailWrap').classList.add('show');
+    document.getElementById('ytbucksWrap').classList.remove('show');
     const prices = {polish:'$19.99', magic:'$29.99'};
     const names = {polish:'YT Polish', magic:'YT Magic'};
-    if(ytbucksApplied){
-      btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
-    } else {
-      btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
-    }
+    btn.textContent = `Submit for ${names[plan]} — ${prices[plan]} →`;
     btn.classList.add('show');
   }
 }
