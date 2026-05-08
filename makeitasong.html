@@ -509,8 +509,8 @@ canvas.waveform{width:100%;height:100%;display:block;}
     </div>
     <div class="success-msg" id="successMsg">
       <div class="success-icon">🎵</div>
-      <div class="success-title">IT'S READY.</div>
-      <div class="success-sub">Your processed file is on its way.<br>Check your email for the download link.</div>
+      <div class="success-title" id="successTitle">IT'S READY.</div>
+      <div class="success-sub" id="successSub">Your processed file is on its way.<br>Check your email for the download link.</div>
     </div>
   </div>
 </div>
@@ -927,6 +927,20 @@ async function confirmPayment(){
 }
 
 function showSuccess(){
+  const titleEl = document.getElementById('successTitle');
+  const subEl = document.getElementById('successSub');
+  
+  if(selPlan === 'starter'){
+    titleEl.textContent = "IT'S READY.";
+    subEl.innerHTML = "Your processed file is on its way.<br>Check your email for the download link.";
+  } else if(selPlan === 'polish'){
+    titleEl.textContent = "YT POLISH IS ON THE WAY.";
+    subEl.innerHTML = "YT will process your recording within 8 hours.<br>Check your email for the download link.";
+  } else if(selPlan === 'magic'){
+    titleEl.textContent = "YT MAGIC IS ON THE WAY.";
+    subEl.innerHTML = "YT will process your recording within 8 hours.<br>Check your email for the download link.";
+  }
+  
   document.getElementById('payModal').classList.add('show');
   document.getElementById('payForm').style.display='none';
   document.getElementById('processingMsg').classList.remove('show');
